@@ -1,4 +1,4 @@
-# Projeto IT-Eletric API
+# Projeto IT-Eletric APP
 
 ## Sobre o Projeto
 O IT-Eletric é um sistema de gerenciamento desenvolvido especificamente para profissionais autônomos do ramo de elétrica. Este sistema facilita o controle de orçamentos, gerenciamento financeiro e de clientes, através de uma interface web moderna e responsiva. O projeto foi desenvolvido como parte do trabalho de conclusão de curso em Engenharia de Software pelo Centro Universitário - Católica de Santa Catarina.
@@ -10,12 +10,6 @@ Esse é o FRONT-END do projeto, que também conta com um back-end e uma landing 
 ## [Jira](https://diegopriessdev.atlassian.net/jira/software/projects/KAN/boards/1)
 
 ## Arquitetura C4
-[NV.1](https://drive.google.com/file/d/1bnCtQRtOh_jkotOa571YO-D-5gz6OyUG/view?usp=drive_link)
-[NV.2](https://drive.google.com/file/d/1iDp1fNpt0tBtuexK8ZKnvORQkx-cX0R_/view?usp=drive_link)
-[NV.3](https://drive.google.com/file/d/1ix0lH-rm1R2yDmxaQIuFHQA3FDDvZRKx/view?usp=drive_link)
-[NV.4](https://drive.google.com/file/d/1T5Rue1kjM4t-F5wC1WwuMMAc6OAbDRc-/view?usp=drive_link)
-
-## Casos de Uso
 [NV.1](https://drive.google.com/file/d/1bnCtQRtOh_jkotOa571YO-D-5gz6OyUG/view?usp=drive_link)
 [NV.2](https://drive.google.com/file/d/1iDp1fNpt0tBtuexK8ZKnvORQkx-cX0R_/view?usp=drive_link)
 [NV.3](https://drive.google.com/file/d/1ix0lH-rm1R2yDmxaQIuFHQA3FDDvZRKx/view?usp=drive_link)
