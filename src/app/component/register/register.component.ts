@@ -5,6 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common'; // Importa CommonModule para funcionalidades básicas do Angular
+import { UserService } from '../../core/services/user.service';
 
 @Component({
   selector: 'app-register',
@@ -23,7 +24,7 @@ import { CommonModule } from '@angular/common'; // Importa CommonModule para fun
 export class RegisterComponent implements OnInit {
   form!: FormGroup;
 
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(private fb: FormBuilder, private userService: UserService, private router: Router) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -34,7 +35,14 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    // Lógica de registro
-    this.router.navigate(['/dashboard']);
+    this.userService
+      .register(
+        this.form.get('name')?.value,
+        this.form.get('email')?.value,
+        this.form.get('password')?.value
+      ).subscribe(() => {
+        this.router.navigateByUrl("/login");
+      });
+
   }
 }
