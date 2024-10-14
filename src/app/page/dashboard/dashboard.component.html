@@ -1,0 +1,31 @@
+<div class="dashboard" [class.is-mobile]="mobileQueryMatches">
+  <mat-toolbar class="dashboard-toolbar">
+    <button mat-icon-button (click)="snav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <h1 class="app-name">Dashboard</h1>
+  </mat-toolbar>
+
+  <mat-sidenav-container
+    class="navbar-container"
+    [style.marginTop.px]="mobileQueryMatches ? 56 : 0"
+  >
+    <mat-sidenav
+      #snav
+      [mode]="mobileQueryMatches ? 'over' : 'side'"
+      [fixedInViewport]="mobileQueryMatches"
+      fixedTopGap="56"
+	  class="navbar-content"
+    >
+      <mat-nav-list *ngFor="let nav of fillerNav">
+        <a mat-list-item [routerLink]="'/' + nav">{{ nav }}</a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <div class="content">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
