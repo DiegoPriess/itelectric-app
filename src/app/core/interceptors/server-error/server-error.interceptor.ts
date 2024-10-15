@@ -8,18 +8,14 @@ export const serverErrorInterceptor: HttpInterceptorFn = (req, next) => {
   const snackbar = inject(MatSnackBar);
 
   return next(req).pipe(
-    tap((httpEvent) => {
-      console.log(httpEvent.type);
-    }),
+    tap(() => {}),
     catchError((error: HttpErrorResponse) => {
-      if (error.status === 400) {
-        const errorMessage = error.error?.message || "Erro desconhecido";
-        snackbar.openFromComponent(ErrorSnackbarComponent, {
-          data: errorMessage,
-          duration: 5000,
-          panelClass: ['error-snackbar']
-        });
-      }
+      const errorMessage = error.error?.message || "Erro desconhecido";
+      snackbar.openFromComponent(ErrorSnackbarComponent, {
+        data: errorMessage,
+        duration: 5000,
+        panelClass: ['error-snackbar']
+      });
 
       return throwError(() => error);
     })
