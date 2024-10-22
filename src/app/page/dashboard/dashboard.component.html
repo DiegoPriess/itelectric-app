@@ -3,7 +3,7 @@
     <button mat-icon-button (click)="snav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
-    <h1 class="app-name">Dashboard</h1>
+    <h1 class="app-name">ITElectric</h1>
   </mat-toolbar>
 
   <mat-sidenav-container
@@ -15,10 +15,10 @@
       [mode]="mobileQueryMatches ? 'over' : 'side'"
       [fixedInViewport]="mobileQueryMatches"
       fixedTopGap="56"
-	  class="navbar-content"
-    >
+      class="navbar-content"
+      [opened]="isOpen">
       <mat-nav-list *ngFor="let nav of fillerNav">
-        <a mat-list-item [routerLink]="'/' + nav">{{ nav }}</a>
+        <a mat-list-item [routerLink]="nav.link">{{ nav.title }}</a>
       </mat-nav-list>
     </mat-sidenav>
 

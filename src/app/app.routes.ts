@@ -4,6 +4,7 @@ import { HomeComponent } from './page/home/home.component';
 import { LoginComponent } from './component/login/login.component';
 import { RegisterComponent } from './component/register/register.component';
 import { DashboardComponent } from './page/dashboard/dashboard.component';
+import { MaterialComponent } from './page/material/material.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -18,7 +19,9 @@ export const routes: Routes = [
   { 
     path: 'dashboard', 
     component: DashboardComponent,
-    children: []
+    children: [
+      { path: 'material', component: MaterialComponent }
+    ]
   },
 ];
 

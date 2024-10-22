@@ -24,14 +24,18 @@ import { RouterModule } from '@angular/router';
 })
 export class DashboardComponent implements OnDestroy {
     mobileQueryMatches: boolean = false;
-    fillerNav = Array.from({ length: 50 }, (_, i) => `Nav Item ${i + 1}`);
+    fillerNav = [
+        {title: "Materiais", link: "material"}
+    ];
     private mobileQuerySubscription: Subscription;
+    isOpen: boolean = true;
 
     constructor(private breakpointObserver: BreakpointObserver) {
         this.mobileQuerySubscription = this.breakpointObserver.observe([Breakpoints.Handset])
             .subscribe((result: BreakpointState) => {
                 this.mobileQueryMatches = result.matches;
             });
+        if (this.mobileQueryMatches) this.isOpen = false; 
     }
 
     ngOnDestroy(): void {

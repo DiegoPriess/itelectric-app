@@ -40,7 +40,6 @@ export class LoginComponent implements OnInit {
 		this.userService
 			.login(this.form.get('email')?.value, this.form.get('password')?.value)
 			.subscribe((response: ILogin) => {
-				console.log(response)
 				sessionStorage.setItem("token", response.token as string);
       			this.router.navigateByUrl("/dashboard");
 			});
