@@ -1,38 +1,5 @@
-<div class="material">
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <mat-form-field appearance="fill">
-      <mat-label>Nome</mat-label>
-      <input matInput formControlName="name" />
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Preço</mat-label>
-      <input matInput formControlName="price" />
-    </mat-form-field>
-
-    <div style="display: flex; align-items: center; gap: 8px">
-      <mat-form-field appearance="fill" style="flex: 1">
-        <mat-label>Quantidade</mat-label>
-        <input matInput formControlName="quantity" />
-      </mat-form-field>
-
-      <mat-form-field appearance="fill" style="flex: 1">
-        <mat-label>Unidade de Medida</mat-label>
-        <mat-select formControlName="unitOfMeasure">
-          <mat-option *ngFor="let unitOfMeasure of unitOfMeasureList" [value]="unitOfMeasure">
-            {{ unitOfMeasure }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-
-    <button
-      mat-raised-button
-      color="primary"
-      type="submit"
-      [disabled]="!form.valid"
-    >
-      Salvar
-    </button>
-  </form>
-</div>
+<mat-sidenav-container class="sidenav-container">
+  <div class="material">
+    <app-material-list></app-material-list>
+  </div>
+</mat-sidenav-container>

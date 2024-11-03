@@ -1,6 +1,14 @@
+@import './variables.scss';
+
 .mat-mdc-snack-bar-container {
   &.error-snackbar {
     --mdc-snackbar-container-color: #a72c24;
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+
+  &.success-snackbar {
+    --mdc-snackbar-container-color: #216e21;
     --mat-mdc-snack-bar-button-color: #fff;
     --mdc-snackbar-supporting-text-color: #fff;
   }
