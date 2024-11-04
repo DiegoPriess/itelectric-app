@@ -29,13 +29,17 @@ export class MaterialService {
         return this.http.delete<IMaterial>(`${BASE_URL}/material/${id}`, { headers });
     }
 
-    list(page: number, size: number): Observable<Page<IMaterial>> {
-        const headers = this.utilsService.getHeader() ;
-        const params = new HttpParams()
+    list(page: number, size: number, name: string = ''): Observable<Page<IMaterial>> {
+        const headers = this.utilsService.getHeader();
+        let params = new HttpParams()
             .set('page', page.toString())
             .set('size', size.toString());
-
+    
+        if (name) {
+            params = params.set('name', name);
+        }
+    
         return this.http.get<Page<IMaterial>>(`${BASE_URL}/material`, { headers, params });
-    }
+    }    
 }
 

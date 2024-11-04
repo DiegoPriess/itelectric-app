@@ -4,7 +4,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common'; // Importa CommonModule para funcionalidades básicas do Angular
+import { CommonModule } from '@angular/common';
 import { UserService } from '../../core/services/user.service';
 
 @Component({

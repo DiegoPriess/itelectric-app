@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -15,6 +15,8 @@ import { MaterialCreateComponent } from '../material-create/material-create.comp
 import { MaterialEditComponent } from '../material-edit/material-edit.component';
 import { MaterialViewComponent } from '../material-view/material-view.component';
 import { UtilsService } from '../../../core/services/utils.service';
+import { MatLabel } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
 	selector: 'app-material-list',
@@ -28,15 +30,20 @@ import { UtilsService } from '../../../core/services/utils.service';
 		MatCard,
 		MatCardActions,
 		MatCardContent,
+		MatInputModule,
+		MatLabel
 	],
 	templateUrl: './material-list.component.html',
 	styleUrls: ['./material-list.component.scss']
 })
 export class MaterialListComponent implements OnInit {
+	@Input() selectable: boolean = false;
 	dataSource: IMaterial[] = [];
 	totalElements: number = 0;
 	pageSize = 10;
 	pageIndex = 0;
+	selectedItems: IMaterial[] = [];
+	searchQuery: string = '';
 
 	@Output() add = new EventEmitter<void>();
 	@Output() edit = new EventEmitter<void>();
@@ -44,7 +51,6 @@ export class MaterialListComponent implements OnInit {
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 
 	constructor(
-		private router: Router,
 		private materialService: MaterialService,
 		private dialog: MatDialog,
 		private utilsService: UtilsService
@@ -55,7 +61,8 @@ export class MaterialListComponent implements OnInit {
 	}
 
 	loadData(): void {
-		this.materialService.list(this.pageIndex, this.pageSize).subscribe({
+		console.log(`Searching for: ${this.searchQuery}`); // Adicione este log
+		this.materialService.list(this.pageIndex, this.pageSize, this.searchQuery).subscribe({
 			next: (page: Page<IMaterial>) => {
 				this.dataSource = page.content;
 				this.totalElements = page.totalElements;
@@ -66,10 +73,29 @@ export class MaterialListComponent implements OnInit {
 		});
 	}
 
+
 	onPageChange(event: any): void {
 		this.pageIndex = event.pageIndex;
 		this.pageSize = event.pageSize;
 		this.loadData();
+	}
+
+	onSearchChange(event: Event): void {
+		const input = event.target as HTMLInputElement;
+		this.searchQuery = input.value;
+		this.pageIndex = 0;
+		this.loadData();
+	}
+
+	toggleSelection(item: IMaterial): void {
+		if (this.selectable) {
+			const index = this.selectedItems.findIndex(selected => selected.id === item.id);
+			if (index === -1) {
+				this.selectedItems.push(item);
+			} else {
+				this.selectedItems.splice(index, 1);
+			}
+		}
 	}
 
 	delete(id: number) {
