@@ -16,10 +16,10 @@
       >
         <mat-card-content class="card-content">
           <p class="card-name">{{ element.name }}</p>
-          <p><strong>Preço:</strong> {{ +element.price | currency }}</p>
+          <p><strong>Preço:</strong> {{ +element.price | currency:'BRL' }} </p>
           <p>
             <strong>Quantidade:</strong> {{ element.quantityUnitMeasure }}
-            {{ element.unitMeasure }}
+            {{ element.unitMeasure.label }}
           </p>
         </mat-card-content>
       </mat-card>
