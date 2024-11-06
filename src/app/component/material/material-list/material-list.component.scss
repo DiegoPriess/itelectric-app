@@ -1,4 +1,4 @@
-@import "../../../../variables.scss";
+@import '../../../../variables.scss';
 
 .material-list {
   margin: 20px;
@@ -6,60 +6,65 @@
   .header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+
+    .search-field {
+      flex-direction: row;
+    }
+  }
+
+  .table-container {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    margin-top: 20px;
 
     .add {
       display: flex;
       justify-content: center;
-      border: 2px solid $black;
+      align-items: center;
+      color: $white;
+      background-color: $principal-color;
       border-radius: 10px;
-      padding: 5px;
+      padding: 5px 15px 5px 5px;
+      margin: 0 20px 20px 0;
     }
-
-    .search-field {
-      width: 300px;
-      margin-right: 20px;
+  
+    th, td {
+      padding: 8px;
+      text-align: center;
+      vertical-align: middle;
+      min-height: 80px;
     }
-  }
-
-  .card-container {
-    display: flex;
-    flex-direction: column;
-
-    .card-item {
-      display: flex;
-      flex-direction: row;
-      width: 100%;
-      margin: 15px 0;
-      justify-content: space-between;
-      padding: 10px 0;
-
-      .card-content {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        width: 100%;
-        padding: 0;
-
-        h1, p {
-          margin: 0;
-        }
-      }
+  
+    th {
+      background-color: #f0f0f0;
     }
-
-    .card-name {
-      font-size: 1.5em;
+  
+    tr:hover {
+      transition: opacity 0.3s ease;
+      background-color: #e0e0e0;
     }
-
-    .card-actions {
+  
+    .actions {
       display: flex;
       justify-content: center;
       align-items: center;
+      gap: 10px;
+    }
+  
+    .actions button {
+      margin: 0;
+      padding: 4px 8px;
     }
   }
 
   .selected {
-    background-color: rgba($principal-color, 0.1);
-    border: 1px solid $principal-color;
+    background-color: rgba(0, 123, 255, 0.1);
+    border: 1px solid #007bff;
   }
-  
+
+  mat-paginator {
+    margin-top: 10px;
+  }
 }
