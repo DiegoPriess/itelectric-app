@@ -25,7 +25,8 @@ import { RouterModule } from '@angular/router';
 export class DashboardComponent implements OnDestroy {
     mobileQueryMatches: boolean = false;
     fillerNav = [
-        {title: "Materiais", link: "material"}
+        {title: "Materiais", link: "materiais"},
+        {title: "Trabalhos", link: "trabalhos"}
     ];
     private mobileQuerySubscription: Subscription;
     isOpen: boolean = true;
