@@ -41,7 +41,7 @@ export class RegisterComponent implements OnInit {
         this.form.get('email')?.value,
         this.form.get('password')?.value
       ).subscribe(() => {
-        this.router.navigateByUrl("/login");
+        this.router.navigateByUrl("/entrar");
       });
 
   }

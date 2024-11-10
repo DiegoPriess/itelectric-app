@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
 import { BASE_URL } from '../../config/utils';
 import { IMaterial } from '../models/Material';
 import { UtilsService } from './utils.service';
-import { Page } from '../models/Page';
+import { Page } from '../interfaces/Page';
+import { IMaterialRequest } from '../interfaces/material/MaterialRequest';
 
 @Injectable({
     providedIn: 'root',
@@ -19,14 +21,26 @@ export class MaterialService {
         return this.http.post<IMaterial>(`${BASE_URL}/material`, material, { headers });
     }
 
-    edit(material: IMaterial): Observable<any> {
+    get(materialId: number): Observable<any> {
         const headers = this.utilsService.getHeader();
-        return this.http.put<IMaterial>(`${BASE_URL}/material/${material.id}`, material, { headers });
+        return this.http.get<IMaterial>(`${BASE_URL}/material/${materialId}`, { headers });
     }
 
-    delete(id: number): Observable<any> {
+    edit(material: IMaterial): Observable<any> {
         const headers = this.utilsService.getHeader();
-        return this.http.delete<IMaterial>(`${BASE_URL}/material/${id}`, { headers });
+        const request: IMaterialRequest = {
+            name: material.name,
+            price: material.price,
+            quantityUnitMeasure: material.quantityUnitMeasure,
+            unitMeasure: material.unitMeasure.name
+        }
+
+        return this.http.put<IMaterial>(`${BASE_URL}/material/${material.id}`, request, { headers });
+    }
+
+    delete(materialId: number): Observable<any> {
+        const headers = this.utilsService.getHeader();
+        return this.http.delete<IMaterial>(`${BASE_URL}/material/${materialId}`, { headers });
     }
 
     list(page: number, size: number, name: string = ''): Observable<Page<IMaterial>> {

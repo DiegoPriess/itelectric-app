@@ -1,4 +1,4 @@
-import { Component, Optional } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -6,12 +6,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 
 import { CommonModule } from '@angular/common';
-import { IEnum } from '../../../core/models/Enum';
+import { IEnum } from '../../../core/interfaces/Enum';
 import { EnumService } from '../../../core/services/enum.service';
 import { MaterialService } from '../../../core/services/material.service';
 import { UtilsService } from '../../../core/services/utils.service';
-import { MatDialogRef } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-material-create',
@@ -36,7 +36,7 @@ export class MaterialCreateComponent {
               private enumService: EnumService,
               private materialService: MaterialService,
               private utilsService: UtilsService,
-              @Optional() private dialogRef?: MatDialogRef<MaterialCreateComponent>) {
+              private router: Router) {
     this.form = this.fb.group({
       name: ['', Validators.required],
       price: ['', [Validators.required, Validators.pattern('^[0-9]+(.[0-9]{0,2})?$')]],
@@ -54,13 +54,13 @@ export class MaterialCreateComponent {
   onSubmit() {
     this.materialService.add(this.form.value).subscribe({
       next: () => {
-        if (this.dialogRef) this.dialogRef.close();
+        this.router.navigateByUrl("/menu/materiais");
         this.utilsService.showSuccessMessage("Material adicionado com sucesso!")
       }
     });
   }
 
-  closeDialog(): void {
-    if (this.dialogRef) this.dialogRef.close();
+  back(): void {
+    this.router.navigateByUrl("/menu/materiais");
   }
 }

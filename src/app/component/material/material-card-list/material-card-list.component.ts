@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 
 import { IMaterial } from '../../../core/models/Material';
 import { MaterialService } from '../../../core/services/material.service';
-import { Page } from '../../../core/models/Page';
+import { Page } from '../../../core/interfaces/Page';
 
 @Component({
   selector: 'app-material-card-list',

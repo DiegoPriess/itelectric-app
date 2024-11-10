@@ -1,18 +1,15 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatDialog } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 import { IMaterial } from '../../../core/models/Material';
 import { MaterialService } from '../../../core/services/material.service';
-import { Page } from '../../../core/models/Page';
-import { MaterialCreateComponent } from '../material-create/material-create.component';
-import { MaterialEditComponent } from '../material-edit/material-edit.component';
-import { MaterialViewComponent } from '../material-view/material-view.component';
+import { Page } from '../../../core/interfaces/Page';
 import { UtilsService } from '../../../core/services/utils.service';
 
 @Component({
@@ -37,15 +34,12 @@ export class MaterialListComponent implements OnInit {
 	searchQuery: string = '';
 	displayedColumns: string[] = ['name', 'price', 'quantityUnitMeasure', 'actions'];
 
-	@Output() add = new EventEmitter<void>();
-	@Output() edit = new EventEmitter<void>();
-
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 
 	constructor(
 		private materialService: MaterialService,
-		private dialog: MatDialog,
-		private utilsService: UtilsService
+		private utilsService: UtilsService,
+		private router: Router
 	) { }
 
 	ngOnInit(): void {
@@ -84,44 +78,15 @@ export class MaterialListComponent implements OnInit {
 		});
 	}
 
-	openAddDialog(): void {
-		const dialogRef = this.dialog.open(MaterialCreateComponent, {
-			width: '90vw',
-			maxWidth: '600px',
-			maxHeight: '90vh',
-			autoFocus: false
-		});
-
-		dialogRef.afterClosed().subscribe(() => {
-			this.loadData();
-		});
+	onCreate(): void {
+		this.router.navigate(['/menu/materiais/criar']);
 	}
 
-	openViewDialog(material: IMaterial): void {
-		const dialogRef = this.dialog.open(MaterialViewComponent, {
-			width: '90vw',
-			maxWidth: '600px',
-			maxHeight: '90vh',
-			autoFocus: false,
-			data: { material: material }
-		});
-
-		dialogRef.afterClosed().subscribe(() => {
-			this.loadData();
-		});
+	onEdit(materialId: number): void {
+		this.router.navigate(['/menu/materiais/editar', materialId]);
 	}
 
-	openEditDialog(material: IMaterial): void {
-		const dialogRef = this.dialog.open(MaterialEditComponent, {
-			width: '90vw',
-			maxWidth: '600px',
-			maxHeight: '90vh',
-			autoFocus: false,
-			data: { material: material }
-		});
-
-		dialogRef.afterClosed().subscribe(() => {
-			this.loadData();
-		});
+	onView(materialId: number): void {
+		this.router.navigate(['/menu/materiais/visualizar', materialId]);
 	}
 }

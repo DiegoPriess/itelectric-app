@@ -8,7 +8,7 @@
   </mat-toolbar>
 
   <div class="table-container">
-    <button class="add" mat-icon-button (click)="openAddDialog()">
+    <button class="add" mat-icon-button (click)="onCreate()">
       <mat-icon>add</mat-icon> Adicionar
     </button>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 material-table">
@@ -34,10 +34,10 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> Ações </th>
         <td mat-cell *matCellDef="let element" class="actions">
-          <button mat-icon-button color="primary" (click)="openViewDialog(element)" title="Visualizar">
+          <button mat-icon-button color="primary" (click)="onView(element.id)" title="Visualizar">
             <mat-icon>visibility</mat-icon>
           </button>
-          <button mat-icon-button color="accent" (click)="openEditDialog(element)" title="Editar">
+          <button mat-icon-button color="accent" (click)="onEdit(element.id)" title="Editar">
             <mat-icon>edit</mat-icon>
           </button>
           <button mat-icon-button color="warn" (click)="delete(element.id)" title="Excluir">

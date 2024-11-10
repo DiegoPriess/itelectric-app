@@ -1,9 +1,9 @@
-import { IEnum } from "./Enum";
+import { IEnum } from "../interfaces/Enum";
 
 export interface IMaterial {
     id: number;
-    name: String,
-    price: Number,
+    name: string,
+    price: number,
     unitMeasure: IEnum,
-    quantityUnitMeasure: Number
+    quantityUnitMeasure: number
 }

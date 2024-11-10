@@ -1,29 +1,28 @@
-import { Component, Inject, Input, Optional } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { IEnum } from '../../../core/models/Enum';
+import { IEnum } from '../../../core/interfaces/Enum';
 import { EnumService } from '../../../core/services/enum.service';
 import { MaterialService } from '../../../core/services/material.service';
 import { UtilsService } from '../../../core/services/utils.service';
 import { IMaterial } from '../../../core/models/Material';
-import { MaterialCreateComponent } from '../material-create/material-create.component';
 
 @Component({
   selector: 'app-material-edit',
   standalone: true,
   imports: [
     CommonModule,
-		ReactiveFormsModule,
-		MatFormFieldModule,
-		MatInputModule,
-		MatButtonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
     MatSelectModule,
     MatIcon
   ],
@@ -33,14 +32,14 @@ import { MaterialCreateComponent } from '../material-create/material-create.comp
 export class MaterialEditComponent {
   form!: FormGroup;
   unitOfMeasureList: IEnum[] = [];
-  material!: IMaterial;
+  materialId!: number;
 
   constructor(private fb: FormBuilder,
-              private enumService: EnumService,
-              private materialService: MaterialService,
-              private utilsService: UtilsService,
-              @Inject(MAT_DIALOG_DATA) public data: any,
-              @Optional() private dialogRef?: MatDialogRef<MaterialCreateComponent>) {
+    private enumService: EnumService,
+    private materialService: MaterialService,
+    private utilsService: UtilsService,
+    private router: Router,
+    private route: ActivatedRoute) {
     this.form = this.fb.group({
       id: [''],
       name: ['', Validators.required],
@@ -51,23 +50,47 @@ export class MaterialEditComponent {
   }
 
   ngOnInit() {
+    this.materialId = this.getIdFromUrl()
+
     this.enumService.listUnitOfMeasure().subscribe((unitOfMeasureList: IEnum[]) => {
       this.unitOfMeasureList = unitOfMeasureList;
+      this.loadMaterialData();
     });
+  }
 
-    this.form.patchValue(this.data.material);
+  loadMaterialData() {
+    this.materialService.get(this.materialId).subscribe({
+      next: (material: IMaterial) => {
+        this.form.patchValue({
+          id: material.id,
+          name: material.name,
+          price: material.price,
+          quantityUnitMeasure: material.quantityUnitMeasure,
+          unitMeasure: this.unitOfMeasureList.find(u => u.name === material.unitMeasure.name)
+        });
+      }
+    });
+  }
+
+  compareUnits(u1: any, u2: any): boolean {
+    return u1 && u2 ? u1.name === u2.name : u1 === u2;
+  }
+
+  getIdFromUrl(): number {
+    const id = this.route.snapshot.paramMap.get('id');
+    return id ? +id : 0;
+  }
+
+  back(): void {
+    this.router.navigateByUrl("/menu/materiais");
   }
 
   onSubmit() {
     this.materialService.edit(this.form.value).subscribe({
       next: () => {
-        if (this.dialogRef) this.dialogRef.close();
+        this.router.navigateByUrl("/menu/materiais");
         this.utilsService.showSuccessMessage("Material alterado com sucesso!")
       }
     });
-  }
-
-  closeDialog(): void {
-    if (this.dialogRef) this.dialogRef.close();
   }
 }

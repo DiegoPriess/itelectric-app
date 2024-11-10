@@ -1,46 +1,45 @@
-<div class="dialog-header">
-  <h1>Alterar Material</h1>
-  <button mat-icon-button (click)="closeDialog()" aria-label="Fechar">
-    <mat-icon>close</mat-icon>
-  </button>
-</div>
-
-<div class="dialog-content">
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <mat-form-field appearance="fill">
-      <mat-label>Nome</mat-label>
-      <input matInput formControlName="name" />
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Preço</mat-label>
-      <input matInput formControlName="price" />
-    </mat-form-field>
-
-    <mat-form-field appearance="fill" style="flex: 1">
-      <mat-label>Quantidade</mat-label>
-      <input matInput formControlName="quantityUnitMeasure" />
-    </mat-form-field>
-
-    <mat-form-field appearance="fill" style="flex: 1">
-      <mat-label>Unidade de Medida</mat-label>
-      <mat-select formControlName="unitMeasure">
-        <mat-option
-          *ngFor="let unitOfMeasure of unitOfMeasureList"
-          [value]="unitOfMeasure.name"
-        >
-          {{ unitOfMeasure.label }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <button
-      mat-raised-button
-      color="primary"
-      type="submit"
-      [disabled]="!form.valid"
-    >
-      Salvar
+<div class="material-edit">
+  <div class="header">
+    <button mat-icon-button (click)="back()" aria-label="Voltar">
+      <mat-icon>arrow_back</mat-icon>
     </button>
-  </form>
+    <h1>Editar Material</h1>
+  </div>
+
+  <div class="content">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill">
+        <mat-label>Nome</mat-label>
+        <input matInput formControlName="name" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Preço</mat-label>
+        <input matInput formControlName="price" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" style="flex: 1">
+        <mat-label>Quantidade</mat-label>
+        <input matInput formControlName="quantityUnitMeasure" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" style="flex: 1">
+        <mat-label>Unidade de Medida</mat-label>
+        <mat-select formControlName="unitMeasure" [compareWith]="compareUnits">
+          <mat-option *ngFor="let unit of unitOfMeasureList" [value]="unit">
+            {{ unit.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="!form.valid"
+      >
+        Salvar
+      </button>
+    </form>
+  </div>
 </div>
