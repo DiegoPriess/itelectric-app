@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -29,6 +29,8 @@ export class MaterialCardListComponent implements OnInit {
   pageIndex = 0;
   selectedItems: IMaterial[] = [];
   searchQuery: string = '';
+
+  @Output() selectedMaterialsChange = new EventEmitter<number[]>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -72,5 +74,7 @@ export class MaterialCardListComponent implements OnInit {
     } else {
       this.selectedItems.splice(index, 1);
     }
+
+    this.selectedMaterialsChange.emit(this.selectedItems.map(material => material.id));
   }
 }

@@ -10,8 +10,8 @@ import { IEnum } from '../../../core/interfaces/Enum';
 import { EnumService } from '../../../core/services/enum.service';
 import { MaterialService } from '../../../core/services/material.service';
 import { UtilsService } from '../../../core/services/utils.service';
-import { MatIcon } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-material-create',
@@ -23,7 +23,7 @@ import { Router } from '@angular/router';
 		MatInputModule,
 		MatButtonModule,
     MatSelectModule,
-    MatIcon
+    MatIconModule
   ],
   templateUrl: './material-create.component.html',
   styleUrl: './material-create.component.scss'
