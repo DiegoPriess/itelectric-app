@@ -82,11 +82,11 @@ export class WorkListComponent {
 		this.router.navigate(['/menu/trabalhos/criar']);
 	}
 
-	onEdit(materialId: number): void {
-		this.router.navigate(['/menu/trabalhos/editar', materialId]);
+	onEdit(workId: number): void {
+		this.router.navigate(['/menu/trabalhos/editar', workId]);
 	}
 
-	onView(materialId: number): void {
-		this.router.navigate(['/menu/trabalhos/visualizar', materialId]);
+	onView(workId: number): void {
+		this.router.navigate(['/menu/trabalhos/visualizar', workId]);
 	}
 }
