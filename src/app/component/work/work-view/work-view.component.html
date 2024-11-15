@@ -1,27 +1,24 @@
-<div class="material-create">
+<div class="work-view">
   <div class="header">
     <button mat-icon-button (click)="back()" aria-label="Voltar">
       <mat-icon>arrow_back</mat-icon>
     </button>
-    <h1>Adicionar Trabalho</h1>
+    <h1>Visualizar Trabalho</h1>
   </div>
 
   <div class="content">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <mat-form-field appearance="fill">
+    <form [formGroup]="form">
+      <mat-form-field appearance="fill" readonly>
         <mat-label>Nome</mat-label>
         <input matInput formControlName="name" />
       </mat-form-field>
 
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill" readonly>
         <mat-label>Preço</mat-label>
         <input matInput formControlName="price" />
       </mat-form-field>
 
       <div class="material-form">
-        <app-material-card-list
-          (selectedMaterialsChange)="onSelectedMaterialsChange($event)"
-        ></app-material-card-list>
         <div class="selected-materials-box">
           <h1>Materiais Selecionados</h1>
           <mat-card
@@ -34,15 +31,6 @@
           </mat-card>
         </div>
       </div>
-
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        [disabled]="!form.valid"
-      >
-        Salvar
-      </button>
     </form>
   </div>
 </div>

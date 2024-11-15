@@ -1,38 +1,41 @@
 <div class="material-card-list">
-    <mat-toolbar class="header" color="primary">
-      <span>Listagem de Materiais</span>
-      <mat-form-field appearance="outline" class="search-field">
-        <mat-label>Pesquisar</mat-label>
-        <input matInput (input)="onSearchChange($event)" placeholder="Nome do Material" />
-      </mat-form-field>
-    </mat-toolbar>
-  
-    <div class="card-container">
-      <mat-card
-        *ngFor="let element of dataSource"
-        class="mat-elevation-z4 card-item"
-        [ngClass]="{ selected: selectedItems.includes(element) }"
-        (click)="toggleSelection(element)"
-      >
-        <mat-card-content class="card-content">
-          <p class="card-name">{{ element.name }}</p>
-          <p><strong>Preço:</strong> {{ +element.price | currency:'BRL' }} </p>
-          <p>
-            <strong>Quantidade:</strong> {{ element.quantityUnitMeasure }}
-            {{ element.unitMeasure.label }}
-          </p>
-        </mat-card-content>
-      </mat-card>
-    </div>
-  
-    <mat-paginator
-      [length]="totalElements"
-      [pageSize]="pageSize"
-      [pageIndex]="pageIndex"
-      [pageSizeOptions]="[5, 10, 20]"
-      (page)="onPageChange($event)"
-      showFirstLastButtons
+  <mat-toolbar class="header" color="primary">
+    <span>Listagem de Materiais</span>
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Pesquisar</mat-label>
+      <input
+        matInput
+        (input)="onSearchChange($event)"
+        placeholder="Nome do Material"
+      />
+    </mat-form-field>
+  </mat-toolbar>
+
+  <div class="card-container">
+    <mat-card
+      *ngFor="let element of dataSource"
+      class="mat-elevation-z4 card-item"
+      [class.selected]="isSelected(element)"
+      (click)="toggleMaterialSelection(element)"
     >
-    </mat-paginator>
+      <mat-card-content class="card-content">
+        <p class="card-name">{{ element.name }}</p>
+        <p><strong>Preço:</strong> {{ +element.price | currency : "BRL" }}</p>
+        <p>
+          <strong>Quantidade:</strong> {{ element.quantityUnitMeasure }}
+          {{ element.unitMeasure.label }}
+        </p>
+      </mat-card-content>
+    </mat-card>
   </div>
-  
+
+  <mat-paginator
+    [length]="totalElements"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    [pageSizeOptions]="[5, 10, 20]"
+    (page)="onPageChange($event)"
+    showFirstLastButtons
+  >
+  </mat-paginator>
+</div>

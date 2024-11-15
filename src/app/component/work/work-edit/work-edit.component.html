@@ -1,9 +1,9 @@
-<div class="material-create">
+<div class="work-edit">
   <div class="header">
     <button mat-icon-button (click)="back()" aria-label="Voltar">
       <mat-icon>arrow_back</mat-icon>
     </button>
-    <h1>Adicionar Trabalho</h1>
+    <h1>Editar Trabalho</h1>
   </div>
 
   <div class="content">
@@ -20,6 +20,7 @@
 
       <div class="material-form">
         <app-material-card-list
+          [selectedMaterials]="selectedMaterials"
           (selectedMaterialsChange)="onSelectedMaterialsChange($event)"
         ></app-material-card-list>
         <div class="selected-materials-box">

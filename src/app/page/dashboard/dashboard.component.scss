@@ -16,10 +16,14 @@
       width: 15%;
 
       border-radius: 0;
-      background-color: $principal-color;
+      background-color: $white;
 
       box-shadow: 5px 0px 10px $grey;
-      border-radius: 0 20px 20px 0;
+      border-radius: 0;
     }
+  }
+
+  .content {
+    margin: 10px 30px;
   }
 }

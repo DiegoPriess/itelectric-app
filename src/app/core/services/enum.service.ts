@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { BASE_URL } from '../../config/utils';
-import { UtilsService } from './utils.service';
+import { UtilsService } from '../utils/utils.service';
 import { IEnum } from '../interfaces/Enum';
 
 @Injectable({

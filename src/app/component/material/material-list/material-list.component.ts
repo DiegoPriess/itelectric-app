@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import { IMaterial } from '../../../core/models/Material';
 import { MaterialService } from '../../../core/services/material.service';
 import { Page } from '../../../core/interfaces/Page';
-import { UtilsService } from '../../../core/services/utils.service';
+import { UtilsService } from '../../../core/utils/utils.service';
 
 @Component({
 	selector: 'app-material-list',

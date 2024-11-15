@@ -3,8 +3,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { BASE_URL } from '../../config/utils';
-import { UtilsService } from './utils.service';
+import { UtilsService } from '../utils/utils.service';
 import { Page } from '../interfaces/Page';
+import { IWorkRequest } from '../interfaces/work/WorkRequest';
 import { IWork } from '../models/Work';
 
 @Injectable({
@@ -15,14 +16,24 @@ export class WorkService {
         private utilsService: UtilsService
     ) { }
 
-    add(material: IWork): Observable<any> {
+    add(work: IWork): Observable<any> {
         const headers = this.utilsService.getHeader();
-        return this.http.post<IWork>(`${BASE_URL}/work`, material, { headers });
+        return this.http.post<IWork>(`${BASE_URL}/work`, work, { headers });
     }
 
-    edit(material: IWork): Observable<any> {
+    get(workId: number): Observable<any> {
         const headers = this.utilsService.getHeader();
-        return this.http.put<IWork>(`${BASE_URL}/work/${material.id}`, material, { headers });
+        return this.http.get<IWork>(`${BASE_URL}/work/${workId}`, { headers });
+    }
+
+    edit(work: IWork, selectedMaterialIds: number[]): Observable<any> {
+        const headers = this.utilsService.getHeader();
+        const request: IWorkRequest = {
+            name: work.name,
+            price: work.price,
+            materialIdList: selectedMaterialIds
+        }
+        return this.http.put<IWork>(`${BASE_URL}/work/${work.id}`, request, { headers });
     }
 
     delete(id: number): Observable<any> {

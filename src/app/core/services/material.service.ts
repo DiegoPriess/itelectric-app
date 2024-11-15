@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { BASE_URL } from '../../config/utils';
 import { IMaterial } from '../models/Material';
-import { UtilsService } from './utils.service';
+import { UtilsService } from '../utils/utils.service';
 import { Page } from '../interfaces/Page';
 import { IMaterialRequest } from '../interfaces/material/MaterialRequest';
 

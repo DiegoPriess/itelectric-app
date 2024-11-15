@@ -19,7 +19,7 @@ export class UtilsService {
         return headers
     }
 
-    showSuccessMessage(message: String) {
+    showSuccessMessage(message: string) {
         this.snackbar.openFromComponent(SuccessSnackbarComponent, {
             data: message,
             duration: 5000,

@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { IEnum } from '../../../core/interfaces/Enum';
 import { EnumService } from '../../../core/services/enum.service';
 import { MaterialService } from '../../../core/services/material.service';
-import { UtilsService } from '../../../core/services/utils.service';
+import { UtilsService } from '../../../core/utils/utils.service';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 

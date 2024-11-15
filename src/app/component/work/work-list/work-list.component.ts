@@ -6,28 +6,28 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
 
-import { UtilsService } from '../../../core/services/utils.service';
+import { UtilsService } from '../../../core/utils/utils.service';
 import { Page } from '../../../core/interfaces/Page';
 import { IWork } from '../../../core/models/Work';
 import { WorkService } from '../../../core/services/work.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-work-list',
-  standalone: true,
-  imports: [
-    CommonModule,
+	selector: 'app-work-list',
+	standalone: true,
+	imports: [
+		CommonModule,
 		MatPaginatorModule,
 		MatTableModule,
 		MatIconModule,
 		MatToolbarModule,
 		MatInputModule
-  ],
-  templateUrl: './work-list.component.html',
-  styleUrl: './work-list.component.scss'
+	],
+	templateUrl: './work-list.component.html',
+	styleUrl: './work-list.component.scss'
 })
 export class WorkListComponent {
-  dataSource = new MatTableDataSource<IWork>();
+	dataSource = new MatTableDataSource<IWork>();
 	totalElements: number = 0;
 	pageSize = 10;
 	pageIndex = 0;

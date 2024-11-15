@@ -1,8 +1,8 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatCardContent } from '@angular/material/card';
+import { MatCardContent, MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 
 import { IMaterial } from '../../../core/models/Material';
@@ -16,7 +16,7 @@ import { Page } from '../../../core/interfaces/Page';
     CommonModule,
     MatPaginatorModule,
     MatToolbarModule,
-    MatCardContent,
+    MatCardModule,
     MatInputModule,
   ],
   templateUrl: './material-card-list.component.html',
@@ -30,7 +30,8 @@ export class MaterialCardListComponent implements OnInit {
   selectedItems: IMaterial[] = [];
   searchQuery: string = '';
 
-  @Output() selectedMaterialsChange = new EventEmitter<number[]>();
+  @Input() selectedMaterials: IMaterial[] = [];
+  @Output() selectedMaterialsChange = new EventEmitter<IMaterial[]>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -67,14 +68,16 @@ export class MaterialCardListComponent implements OnInit {
     this.loadData();
   }
 
-  toggleSelection(item: IMaterial): void {
-    const index = this.selectedItems.findIndex(selected => selected.id === item.id);
-    if (index === -1) {
-      this.selectedItems.push(item);
+  toggleMaterialSelection(material: IMaterial) {
+    if (this.isSelected(material)) {
+      this.selectedMaterials = this.selectedMaterials.filter(m => m.id !== material.id);
     } else {
-      this.selectedItems.splice(index, 1);
+      this.selectedMaterials.push(material);
     }
+    this.selectedMaterialsChange.emit(this.selectedMaterials);
+  }
 
-    this.selectedMaterialsChange.emit(this.selectedItems.map(material => material.id));
+  isSelected(material: IMaterial): boolean {
+    return this.selectedMaterials.some(m => m.id === material.id);
   }
 }

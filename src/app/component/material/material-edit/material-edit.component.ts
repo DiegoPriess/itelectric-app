@@ -5,14 +5,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
-import { MatIcon } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { IEnum } from '../../../core/interfaces/Enum';
 import { EnumService } from '../../../core/services/enum.service';
 import { MaterialService } from '../../../core/services/material.service';
-import { UtilsService } from '../../../core/services/utils.service';
 import { IMaterial } from '../../../core/models/Material';
+import { UtilsService } from '../../../core/utils/utils.service';
 
 @Component({
   selector: 'app-material-edit',
@@ -24,7 +24,7 @@ import { IMaterial } from '../../../core/models/Material';
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
-    MatIcon
+    MatIconModule
   ],
   templateUrl: './material-edit.component.html',
   styleUrl: './material-edit.component.scss'

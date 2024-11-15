@@ -29,7 +29,7 @@
 
       .card-content {
         display: flex;
-        justify-content: space-around;
+        justify-content: flex-start;
         align-items: center;
         width: 100%;
         padding: 0;
@@ -38,11 +38,16 @@
         p {
           margin: 0;
         }
-      }
-    }
 
-    .card-name {
-      font-size: 1.5em;
+        p:first-child {
+          width: 20%;
+        }
+
+        p {
+          width: 40%;
+          margin-left: 3%;
+        }
+      }
     }
 
     .card-actions {
