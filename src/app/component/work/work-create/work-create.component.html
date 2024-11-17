@@ -15,7 +15,11 @@
 
       <mat-form-field appearance="fill">
         <mat-label>Preço</mat-label>
-        <input matInput formControlName="price" />
+        <input
+          matInput
+          [value]="form.get('totalValue')?.value | currency : 'BRL' : 'symbol'"
+          formControlName="price"
+        />
       </mat-form-field>
 
       <div class="material-form">

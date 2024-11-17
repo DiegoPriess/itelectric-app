@@ -1,4 +1,4 @@
 export interface ILogin {
-    userId: string,
+    userId: string
     token: string
 }

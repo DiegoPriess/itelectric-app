@@ -1,0 +1,70 @@
+@import '../../../../variables.scss';
+
+.budget-list {
+  margin: 20px;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .search-field {
+      flex-direction: row;
+    }
+  }
+
+  .table-container {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    margin-top: 20px;
+
+    .add {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: $white;
+      background-color: $principal-color;
+      border-radius: 10px;
+      padding: 5px 15px 5px 5px;
+      margin: 0 20px 20px 0;
+    }
+  
+    th, td {
+      padding: 8px;
+      text-align: center;
+      vertical-align: middle;
+      min-height: 80px;
+    }
+  
+    th {
+      background-color: #f0f0f0;
+    }
+  
+    tr:hover {
+      transition: opacity 0.3s ease;
+      background-color: #e0e0e0;
+    }
+  
+    .actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+  
+    .actions button {
+      margin: 0;
+      padding: 4px 8px;
+    }
+  }
+
+  .selected {
+    background-color: rgba(0, 123, 255, 0.1);
+    border: 1px solid #007bff;
+  }
+
+  mat-paginator {
+    margin-top: 10px;
+  }
+}

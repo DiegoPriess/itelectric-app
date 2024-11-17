@@ -1,53 +1,51 @@
-<div class="work-edit">
+<div class="work-view">
   <div class="header">
     <button mat-icon-button (click)="back()" aria-label="Voltar">
       <mat-icon>arrow_back</mat-icon>
     </button>
-    <h1>Editar Trabalho</h1>
+    <h1>Visualizar Trabalho</h1>
   </div>
 
   <div class="content">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form [formGroup]="form">
       <mat-form-field appearance="fill">
-        <mat-label>Nome</mat-label>
-        <input matInput formControlName="name" />
+        <mat-label>Data de entrega</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="deliveryForecast"
+          readonly
+        />
+        <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
-        <mat-label>Preço</mat-label>
+        <mat-label>Email do Cliente</mat-label>
+        <input matInput type="email" formControlName="customerEmail" readonly />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Valor Total</mat-label>
         <input
           matInput
           [value]="form.get('totalValue')?.value | currency : 'BRL' : 'symbol'"
-          formControlName="price"
+          readonly
         />
       </mat-form-field>
 
       <div class="material-form">
-        <app-material-card-list
-          [selectedMaterials]="selectedMaterials"
-          (selectedMaterialsChange)="onSelectedMaterialsChange($event)"
-        ></app-material-card-list>
         <div class="selected-materials-box">
-          <h1>Materiais Selecionados</h1>
+          <h1>Trabalhos Selecionados</h1>
           <mat-card
-            *ngFor="let material of selectedMaterials"
+            *ngFor="let work of selectedWorks"
             class="mat-elevation-z4 card-item"
           >
             <mat-card-content class="card-content">
-              {{ material.name }}
+              {{ work.name }}
             </mat-card-content>
           </mat-card>
         </div>
       </div>
-
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        [disabled]="!form.valid"
-      >
-        Salvar
-      </button>
     </form>
   </div>
 </div>

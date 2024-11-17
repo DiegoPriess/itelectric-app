@@ -12,6 +12,10 @@ import { WorkEditComponent } from './component/work/work-edit/work-edit.componen
 import { WorkViewComponent } from './component/work/work-view/work-view.component';
 import { MaterialListComponent } from './component/material/material-list/material-list.component';
 import { WorkListComponent } from './component/work/work-list/work-list.component';
+import { BudgetListComponent } from './component/budget/budget-list/budget-list.component';
+import { BudgetCreateComponent } from './component/budget/budget-create/budget-create.component';
+import { BudgetViewComponent } from './component/budget/budget-view/budget-view.component';
+import { BudgetEditComponent } from './component/budget/budget-edit/budget-edit.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/entrar', pathMatch: 'full' },
@@ -34,7 +38,11 @@ export const routes: Routes = [
       { path: 'trabalhos', component: WorkListComponent },
       { path: 'trabalhos/criar', component: WorkCreateComponent },
       { path: 'trabalhos/editar/:id', component: WorkEditComponent },
-      { path: 'trabalhos/visualizar/:id', component: WorkViewComponent }
+      { path: 'trabalhos/visualizar/:id', component: WorkViewComponent },
+      { path: 'orcamentos', component: BudgetListComponent },
+      { path: 'orcamentos/criar', component: BudgetCreateComponent },
+      { path: 'orcamentos/editar/:id', component: BudgetEditComponent },
+      { path: 'orcamentos/visualizar/:id', component: BudgetViewComponent }
     ]
   },
 ];
