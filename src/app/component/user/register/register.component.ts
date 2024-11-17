@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../../core/services/user.service';
+import { UtilsService } from '../../../core/utils/utils.service';
 
 @Component({
   selector: 'app-register',
@@ -24,7 +25,10 @@ import { UserService } from '../../../core/services/user.service';
 export class RegisterComponent implements OnInit {
   form!: FormGroup;
 
-  constructor(private fb: FormBuilder, private userService: UserService, private router: Router) { }
+  constructor(private fb: FormBuilder, 
+    private utilsService: UtilsService,
+    private userService: UserService, 
+    private router: Router) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -42,6 +46,7 @@ export class RegisterComponent implements OnInit {
         this.form.get('password')?.value
       ).subscribe(() => {
         this.router.navigateByUrl("/entrar");
+        this.utilsService.showSuccessMessage("Usuário criado com sucesso!");
       });
 
   }

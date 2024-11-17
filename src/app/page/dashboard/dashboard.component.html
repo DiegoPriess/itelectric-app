@@ -1,14 +1,13 @@
 <div class="dashboard">
-  <mat-sidenav-container
-    class="navbar-container">
+  <mat-sidenav-container class="navbar-container">
     <mat-sidenav
       #snav
       [mode]="'side'"
       fixedTopGap="56"
       class="navbar-content"
-      [opened]="true">
+      [opened]="isOpen">
       <mat-nav-list *ngFor="let nav of fillerNav">
-        <a mat-list-item [routerLink]="nav.link">{{ nav.title }}</a>
+        <a mat-list-item *ngIf="nav.show" [routerLink]="nav.link">{{ nav.title }}</a>
       </mat-nav-list>
     </mat-sidenav>
 
