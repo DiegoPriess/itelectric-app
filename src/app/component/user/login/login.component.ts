@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../../core/services/user.service';
-import { ILogin } from '../../../core/interfaces/login';
+import { ILogin } from '../../../core/interfaces/User/login';
 
 @Component({
 	selector: 'app-login',
@@ -40,7 +40,8 @@ export class LoginComponent implements OnInit {
 		this.userService
 			.login(this.form.get('email')?.value, this.form.get('password')?.value)
 			.subscribe((response: ILogin) => {
-				sessionStorage.setItem("token", response.token as string);
+				sessionStorage.setItem("token", response.token);
+				sessionStorage.setItem("role", response.role);
       			this.router.navigateByUrl("/menu");
 			});
 	}
