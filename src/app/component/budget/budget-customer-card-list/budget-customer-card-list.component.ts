@@ -7,6 +7,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
+import { MatListModule } from '@angular/material/list';
+import { MatDivider } from '@angular/material/divider';
 
 @Component({
   selector: 'app-budget-list',
@@ -18,7 +20,9 @@ import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
     MatCardModule,
     MatInputModule,
 	MatAccordion,
-	MatExpansionModule
+	MatExpansionModule,
+	MatListModule,
+	MatDivider
   ],
   templateUrl: './budget-customer-card-list.component.html',
   styleUrls: ['./budget-customer-card-list.component.scss']

@@ -25,6 +25,23 @@
             <p><strong>Total:</strong> R$ {{ budget.totalValue | number: '1.2-2' }}</p>
             <p><strong>Status:</strong> {{ budget.status.label }}</p>
           </mat-card-content>
+          <mat-divider></mat-divider>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>Trabalhos</mat-panel-title>
+              <mat-panel-description>
+                {{ budget.workList.length }} trabalho(s)
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="work-list">
+              <mat-list>
+                <mat-list-item *ngFor="let work of budget.workList">
+                  <p mat-line>{{ work.name }}</p>
+                  <p mat-line>Preço: R$ {{ work.price | number: '1.2-2' }}</p>
+                </mat-list-item>
+              </mat-list>
+            </div>
+          </mat-expansion-panel>
         </mat-card>
       </div>
     </mat-expansion-panel>
