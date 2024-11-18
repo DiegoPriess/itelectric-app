@@ -19,3 +19,16 @@ button {
   align-items: center;
   cursor: pointer;
 }
+
+
+.header {
+  background-color: $background !important;
+}
+
+.mat-mdc-paginator {
+  background-color: $background !important;
+}
+
+.mat-accordion {
+  background-color: $background !important;
+}

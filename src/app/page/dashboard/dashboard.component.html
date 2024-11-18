@@ -1,20 +1,29 @@
 <div class="dashboard">
-  <mat-sidenav-container class="navbar-container">
-    <mat-sidenav
-      #snav
-      [mode]="'side'"
-      fixedTopGap="56"
-      class="navbar-content"
-      [opened]="isOpen">
-      <mat-nav-list *ngFor="let nav of fillerNav">
-        <a mat-list-item *ngIf="nav.show" [routerLink]="nav.link">{{ nav.title }}</a>
-      </mat-nav-list>
-    </mat-sidenav>
+  <div class="dashboard-container">
+    <div class="navbar">
+      <header>
+        <img src="assets/images/logo-white.png" class="logo" />
+        <button
+          mat-icon-button
+          class="logout"
+          (click)="logout()"
+          title="Sair"
+        >
+          <mat-icon>logout</mat-icon>
+        </button>
+      </header>
+      <nav class="navbar-content">
+        <ul>
+          <li *ngFor="let nav of fillerNav">
+            <a *ngIf="nav.show" [routerLink]="nav.link">{{ nav.title }}</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
 
-    <mat-sidenav-content>
-      <div class="content">
-        <router-outlet></router-outlet>
-      </div>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+    <!-- Main Content -->
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>

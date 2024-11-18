@@ -6,7 +6,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
     selector: 'app-dashboard',
@@ -25,20 +25,22 @@ import { RouterModule } from '@angular/router';
 export class DashboardComponent implements OnDestroy {
     mobileQueryMatches: boolean = false;
     fillerNav = [
-        {title: "Orçamentos", link: "orcamentos-cliente", show: sessionStorage.getItem("role") === "ROLE_CUSTOMER"},
-        {title: "Orçamentos", link: "orcamentos", show: sessionStorage.getItem("role") === "ROLE_OWNER"},
-        {title: "Trabalhos", link: "trabalhos", show: sessionStorage.getItem("role") === "ROLE_OWNER"},
-        {title: "Materiais", link: "materiais", show: sessionStorage.getItem("role") === "ROLE_OWNER"}
+        { title: "Orçamentos", link: "orcamentos-cliente", show: sessionStorage.getItem("role") === "ROLE_CUSTOMER" },
+        { title: "Orçamentos", link: "orcamentos", show: sessionStorage.getItem("role") === "ROLE_OWNER" },
+        { title: "Trabalhos", link: "trabalhos", show: sessionStorage.getItem("role") === "ROLE_OWNER" },
+        { title: "Materiais", link: "materiais", show: sessionStorage.getItem("role") === "ROLE_OWNER" }
     ];
     private mobileQuerySubscription: Subscription;
     isOpen: boolean = true;
 
-    constructor(private breakpointObserver: BreakpointObserver) {
+    constructor(private breakpointObserver: BreakpointObserver,
+        private router: Router
+    ) {
         this.mobileQuerySubscription = this.breakpointObserver.observe([Breakpoints.Handset])
             .subscribe((result: BreakpointState) => {
                 this.mobileQueryMatches = result.matches;
             });
-        if (this.mobileQueryMatches) this.isOpen = false; 
+        if (this.mobileQueryMatches) this.isOpen = false;
     }
 
     ngOnDestroy(): void {
@@ -47,5 +49,10 @@ export class DashboardComponent implements OnDestroy {
 
     toggle(snav: any) {
         snav.toggle();
+    }
+
+    logout() {
+        sessionStorage.clear();
+        this.router.navigate(['']);
     }
 }

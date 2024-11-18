@@ -90,7 +90,7 @@ export class BudgetListComponent {
 		this.router.navigate(['/menu/orcamentos/visualizar', id]);
 	}
 
-  approve(id: number): void {
+	approve(id: number): void {
 		this.budgetService.approve(id).subscribe({
 			next: () => {
 				this.loadData();
@@ -99,7 +99,7 @@ export class BudgetListComponent {
 		});
 	}
 
-  deny(id: number): void {
+	deny(id: number): void {
 		this.budgetService.deny(id).subscribe({
 			next: () => {
 				this.loadData();
