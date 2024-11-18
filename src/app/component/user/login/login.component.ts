@@ -42,7 +42,11 @@ export class LoginComponent implements OnInit {
 			.subscribe((response: ILogin) => {
 				sessionStorage.setItem("token", response.token);
 				sessionStorage.setItem("role", response.role);
-      			this.router.navigateByUrl("/menu");
+				if (response.role === "ROLE_OWNER") {
+					this.router.navigateByUrl("/menu/orcamentos");
+				} else {
+					this.router.navigateByUrl("/menu/orcamentos-cliente");
+				}
 			});
 	}
 }

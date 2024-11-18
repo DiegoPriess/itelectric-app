@@ -53,6 +53,16 @@ export class BudgetService {
         return this.http.get<Page<IBudgetResponse>>(`${BASE_URL}/budget`, { headers, params });
     }
 
+    customerList(page: number, size: number): Observable<Page<IBudgetResponse>> {
+        const headers = this.utilsService.getHeader();
+        let params = new HttpParams()
+            .set('page', page.toString())
+            .set('size', size.toString());
+
+        return this.http.get<Page<IBudgetResponse>>(`${BASE_URL}/budget/customer-list`, { headers, params });
+    }
+
+
     approve(id: number): Observable<any> {
         const headers = this.utilsService.getHeader();
         return this.http.put<IBudget>(`${BASE_URL}/budget/${id}/approve`, {}, { headers });

@@ -1,0 +1,19 @@
+@import '../../../../variables.scss';
+
+.budget-customer-card-list {
+  margin: 20px;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .search-field {
+      flex-direction: row;
+    }
+  }
+
+  .budget-card {
+    margin-top: 10px;
+  }
+}

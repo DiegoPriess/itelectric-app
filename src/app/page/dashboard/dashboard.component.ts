@@ -25,6 +25,7 @@ import { RouterModule } from '@angular/router';
 export class DashboardComponent implements OnDestroy {
     mobileQueryMatches: boolean = false;
     fillerNav = [
+        {title: "Orçamentos", link: "orcamentos-cliente", show: sessionStorage.getItem("role") === "ROLE_CUSTOMER"},
         {title: "Orçamentos", link: "orcamentos", show: sessionStorage.getItem("role") === "ROLE_OWNER"},
         {title: "Trabalhos", link: "trabalhos", show: sessionStorage.getItem("role") === "ROLE_OWNER"},
         {title: "Materiais", link: "materiais", show: sessionStorage.getItem("role") === "ROLE_OWNER"}

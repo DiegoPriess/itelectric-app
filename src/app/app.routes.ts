@@ -16,6 +16,7 @@ import { BudgetListComponent } from './component/budget/budget-list/budget-list.
 import { BudgetCreateComponent } from './component/budget/budget-create/budget-create.component';
 import { BudgetViewComponent } from './component/budget/budget-view/budget-view.component';
 import { BudgetEditComponent } from './component/budget/budget-edit/budget-edit.component';
+import { BudgetCustomerCardListComponent } from './component/budget/budget-customer-card-list/budget-customer-card-list.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/entrar', pathMatch: 'full' },
@@ -42,7 +43,8 @@ export const routes: Routes = [
       { path: 'orcamentos', component: BudgetListComponent },
       { path: 'orcamentos/criar', component: BudgetCreateComponent },
       { path: 'orcamentos/editar/:id', component: BudgetEditComponent },
-      { path: 'orcamentos/visualizar/:id', component: BudgetViewComponent }
+      { path: 'orcamentos/visualizar/:id', component: BudgetViewComponent },
+      { path: 'orcamentos-cliente', component: BudgetCustomerCardListComponent },
     ]
   },
 ];

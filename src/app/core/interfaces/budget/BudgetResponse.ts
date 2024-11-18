@@ -9,4 +9,5 @@ export interface IBudgetResponse {
     customer: IUserResponse
     totalValue: number
     status: IEnum
+    owner: IUserResponse
 }

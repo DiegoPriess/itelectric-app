@@ -1,0 +1,32 @@
+<div class="budget-customer-card-list">
+  <mat-toolbar class="header" color="primary">
+    <span>Listagem de Orçamentos</span>
+  </mat-toolbar>
+
+  <mat-accordion class="accordion">
+    <mat-expansion-panel *ngFor="let electrician of groupedBudgets | keyvalue">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Eletricista: {{ electrician.key }}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{ electrician.value.length }} Orçamento(s)
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div class="card-container">
+        <mat-card class="budget-card" *ngFor="let budget of electrician.value">
+          <mat-card-header>
+            <mat-card-title>Orçamento #{{ budget.id }}</mat-card-title>
+            <mat-card-subtitle>Previsão: {{ budget.deliveryForecast | date }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p><strong>Cliente:</strong> {{ budget.customer.name }}</p>
+            <p><strong>Total:</strong> R$ {{ budget.totalValue | number: '1.2-2' }}</p>
+            <p><strong>Status:</strong> {{ budget.status.label }}</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
