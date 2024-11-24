@@ -10,7 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -23,17 +24,7 @@ jobs:
       - name: Build Angular Application
         run: npm run build -- --configuration production
 
-      - name: Copy files to Lightsail
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          port: 22
-          source: "dist/*"
-          target: "/home/ec2-user/iteletric-app"
-
-      - name: Restart Nginx/Apache
+      - name: Clean target directory on Lightsail
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
@@ -41,4 +32,49 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: 22
           script: |
+            echo "Cleaning target directory..."
+            sudo rm -rf /home/ec2-user/iteletric-app/*
+
+      - name: Copy files to Lightsail
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          source: "dist/**/*"
+          target: "/home/ec2-user/iteletric-app"
+
+      - name: Set correct permissions
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          script: |
+            echo "Setting correct permissions..."
+            sudo chmod -R 755 /home/ec2-user/iteletric-app
+            sudo chown -R nginx:nginx /home/ec2-user/iteletric-app
+
+      - name: Restart Nginx
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          script: |
+            echo "Restarting Nginx..."
             sudo systemctl restart nginx
+
+      - name: Verify Deployment
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          script: |
+            echo "Verifying deployment..."
+            curl -I http://localhost
