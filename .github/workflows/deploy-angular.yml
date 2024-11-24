@@ -37,17 +37,17 @@ jobs:
             sudo chown -R ec2-user:ec2-user /home/ec2-user/iteletric-app
             sudo chmod -R 755 /home/ec2-user/iteletric-app
 
-      - name: Clean target directory on Lightsail
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          port: 22
-          script: |
-            echo "Cleaning target directory..."
-            sudo rm -rf /home/ec2-user/iteletric-app/*
-
+            - name: Clean target directory on Lightsail
+            uses: appleboy/ssh-action@master
+            with:
+              host: ${{ secrets.HOST }}
+              username: ${{ secrets.USERNAME }}
+              key: ${{ secrets.SSH_KEY }}
+              port: 22
+              script: |
+                echo "Cleaning target directory..."
+                sudo rm -rf /home/ec2-user/iteletric-app/*
+    
       - name: Copy files to Lightsail
         uses: appleboy/scp-action@master
         with:
@@ -55,9 +55,9 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: 22
-          ssource: "dist/**/*"
+          source: "dist/**/*"
           target: "/home/ec2-user/iteletric-app"
-
+    
       - name: Set correct permissions
         uses: appleboy/ssh-action@master
         with:
@@ -69,7 +69,7 @@ jobs:
             echo "Setting correct permissions..."
             sudo chmod -R 755 /home/ec2-user/iteletric-app
             sudo chown -R nginx:nginx /home/ec2-user/iteletric-app
-
+    
       - name: Restart Nginx
         uses: appleboy/ssh-action@master
         with:
@@ -80,7 +80,7 @@ jobs:
           script: |
             echo "Restarting Nginx..."
             sudo systemctl restart nginx
-
+    
       - name: Verify Deployment
         uses: appleboy/ssh-action@master
         with:
@@ -90,4 +90,4 @@ jobs:
           port: 22
           script: |
             echo "Verifying deployment..."
-            curl -I http://localhost
+            curl -I http://localhost    
