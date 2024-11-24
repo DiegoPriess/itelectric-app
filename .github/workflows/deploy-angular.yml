@@ -24,6 +24,19 @@ jobs:
       - name: Build Angular Application
         run: npm run build:production
 
+      - name: Set permissions on target directory
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          script: |
+            echo "Ensuring correct permissions on target directory..."
+            sudo mkdir -p /home/ec2-user/iteletric-app
+            sudo chown -R ec2-user:ec2-user /home/ec2-user/iteletric-app
+            sudo chmod -R 755 /home/ec2-user/iteletric-app
+
       - name: Clean target directory on Lightsail
         uses: appleboy/ssh-action@master
         with:
@@ -42,7 +55,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: 22
-          source: "dist/**/*"
+          source: "dist/iteletric-app/**/*"
           target: "/home/ec2-user/iteletric-app"
 
       - name: Set correct permissions
