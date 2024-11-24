@@ -15,7 +15,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
 
       - name: Install dependencies
         run: npm install
@@ -31,7 +31,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: 22
           source: "dist/*"
-          target: "/home/ec2-user/itelectric-app"
+          target: "/home/ec2-user/iteletric-app"
 
       - name: Restart Nginx/Apache
         uses: appleboy/ssh-action@master
