@@ -55,7 +55,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: 22
-          source: "dist/iteletric-app/**/*"
+          ssource: "dist/**/*"
           target: "/home/ec2-user/iteletric-app"
 
       - name: Set correct permissions
