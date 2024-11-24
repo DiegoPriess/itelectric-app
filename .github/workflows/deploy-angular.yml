@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Build Angular Application
-        run: npm run build --configuration production
+        run: ng build --configuration=production
 
       - name: Clean target directory on Lightsail
         uses: appleboy/ssh-action@master
