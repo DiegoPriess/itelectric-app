@@ -27,9 +27,14 @@ jobs:
       - name: Install Angular CLI
         run: npm install -g @angular/cli
 
+      - name: Install Chrome dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libx11-xcb1 libatk1.0-0 libgtk-3-0 libgbm-dev
+
       - name: Run unit tests with coverage
         run: |
-          ng test --code-coverage --watch=false
+          ng test --code-coverage --watch=false --browsers=ChromeHeadlessNoSandbox
 
       - name: Run SonarCloud Scan
         run: |
