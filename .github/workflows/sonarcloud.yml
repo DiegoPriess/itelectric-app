@@ -47,8 +47,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           npx sonar-scanner \
-          -Dsonar.projectKey=meu_projeto_angular \
-          -Dsonar.organization=minha_organizacao \
+          -Dsonar.projectKey=DiegoPriess_itelectric-app \
+          -Dsonar.organization=diegopriess \
           -Dsonar.sources=src \
           -Dsonar.exclusions="**/*.spec.ts,**/node_modules/**" \
           -Dsonar.tests=src \
