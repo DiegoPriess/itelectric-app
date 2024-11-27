@@ -10,7 +10,6 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { Component } from '@angular/core';
 
-// Dummy Component para simular rotas
 @Component({
   selector: 'app-dummy',
   template: '<div>Dummy Component</div>'
@@ -24,7 +23,6 @@ describe('DashboardComponent', () => {
   let mockRouter: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
-    // Mock do BreakpointObserver
     mockBreakpointObserver = jasmine.createSpyObj('BreakpointObserver', ['observe']);
     mockBreakpointObserver.observe.and.returnValue(
       of({
@@ -57,10 +55,8 @@ describe('DashboardComponent', () => {
   });
 
   beforeEach(() => {
-    // Define um valor para o sessionStorage antes de criar o componente
     sessionStorage.setItem('role', 'ROLE_CUSTOMER');
 
-    // Cria o componente
     fixture = TestBed.createComponent(DashboardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
