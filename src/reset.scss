@@ -108,6 +108,8 @@ section {
 
 body {
   line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 ol,
@@ -153,9 +155,4 @@ input[type="submit"] {
   background-color: transparent;
   background-image: none;
   border: none;
-}
-
-body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }

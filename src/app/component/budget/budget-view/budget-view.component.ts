@@ -35,7 +35,7 @@ export class BudgetViewComponent {
   selectedWorksIds: number[] = [];
   selectedWorks: IWork[] = [];
 
-  constructor(private fb: FormBuilder,
+  constructor(private readonly fb: FormBuilder,
     private readonly budgetService: BudgetService,
     private readonly router: Router,
     private readonly route: ActivatedRoute) {

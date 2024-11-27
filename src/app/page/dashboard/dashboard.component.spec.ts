@@ -20,7 +20,6 @@ describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
   let mockBreakpointObserver: jasmine.SpyObj<BreakpointObserver>;
-  let mockRouter: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
     mockBreakpointObserver = jasmine.createSpyObj('BreakpointObserver', ['observe']);
@@ -32,8 +31,6 @@ describe('DashboardComponent', () => {
         }
       })
     );
-
-    mockRouter = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
         imports: [

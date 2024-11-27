@@ -14,7 +14,7 @@ export class UtilsService {
         const token = sessionStorage.getItem('token');
         let headers = new HttpHeaders();
         if (token) {
-            return headers = headers.set('Authorization', `Bearer ${token}`);
+            return headers.set('Authorization', `Bearer ${token}`);
         }
         return headers
     }
