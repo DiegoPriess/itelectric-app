@@ -5,8 +5,6 @@ import { LoginComponent } from './component/user/login/login.component';
 import { RegisterComponent } from './component/user/register/register.component';
 import { DashboardComponent } from './page/dashboard/dashboard.component';
 import { MaterialCreateComponent } from './component/material/material-create/material-create.component';
-import { MaterialEditComponent } from './component/material/material-edit/material-edit.component';
-import { MaterialViewComponent } from './component/material/material-view/material-view.component';
 import { WorkCreateComponent } from './component/work/work-create/work-create.component';
 import { WorkEditComponent } from './component/work/work-edit/work-edit.component';
 import { WorkViewComponent } from './component/work/work-view/work-view.component';
@@ -17,6 +15,7 @@ import { BudgetCreateComponent } from './component/budget/budget-create/budget-c
 import { BudgetViewComponent } from './component/budget/budget-view/budget-view.component';
 import { BudgetEditComponent } from './component/budget/budget-edit/budget-edit.component';
 import { BudgetCustomerCardListComponent } from './component/budget/budget-customer-card-list/budget-customer-card-list.component';
+import { MaterialFormComponent } from './component/material/material-form/material-form.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/entrar', pathMatch: 'full' },
@@ -34,8 +33,8 @@ export const routes: Routes = [
     children: [
       { path: 'materiais', component: MaterialListComponent },
       { path: 'materiais/criar', component: MaterialCreateComponent },
-      { path: 'materiais/editar/:id', component: MaterialEditComponent },
-      { path: 'materiais/visualizar/:id', component: MaterialViewComponent },
+      { path: 'materiais/editar/:id', component: MaterialFormComponent },
+      { path: 'materiais/visualizar/:id', component: MaterialFormComponent },
       { path: 'trabalhos', component: WorkListComponent },
       { path: 'trabalhos/criar', component: WorkCreateComponent },
       { path: 'trabalhos/editar/:id', component: WorkEditComponent },
