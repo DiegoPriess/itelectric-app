@@ -77,6 +77,13 @@ export class MaterialCardListComponent implements OnInit {
     this.selectedMaterialsChange.emit(this.selectedMaterials);
   }
 
+  onCardKeyDown(event: KeyboardEvent, element: any): void {
+		if (event.key === 'Enter' || event.key === ' ') {
+			this.toggleMaterialSelection(element);
+			event.preventDefault();
+		}
+	}
+
   isSelected(material: IMaterial): boolean {
     return this.selectedMaterials.some(m => m.id === material.id);
   }

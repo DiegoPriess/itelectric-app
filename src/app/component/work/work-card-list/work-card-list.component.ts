@@ -74,6 +74,13 @@ export class WorkCardListComponent implements OnInit {
 		this.selectedWorksChange.emit(this.selectedWorks);
 	}
 
+	onCardKeyDown(event: KeyboardEvent, element: any): void {
+		if (event.key === 'Enter' || event.key === ' ') {
+			this.toggleWorkSelection(element);
+			event.preventDefault();
+		}
+	}
+
 	isSelected(work: IWork): boolean {
 		return this.selectedWorks.some(w => w.id === work.id);
 	}
