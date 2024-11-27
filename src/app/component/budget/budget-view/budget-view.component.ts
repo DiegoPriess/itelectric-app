@@ -36,9 +36,9 @@ export class BudgetViewComponent {
   selectedWorks: IWork[] = [];
 
   constructor(private fb: FormBuilder,
-    private budgetService: BudgetService,
-    private router: Router,
-    private route: ActivatedRoute) {
+    private readonly budgetService: BudgetService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute) {
     this.form = this.fb.group({
       id: [''],
       deliveryForecast: ['', Validators.required],

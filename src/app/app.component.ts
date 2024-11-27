@@ -9,8 +9,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     RouterOutlet, 
     MatSnackBarModule
   ],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  templateUrl: './app.component.html'
 })
 export class AppComponent {
   title = 'itelectric-app';

@@ -37,9 +37,9 @@ export class BudgetListComponent {
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 
 	constructor(
-		private budgetService: BudgetService,
-		private utilsService: UtilsService,
-		private router: Router
+		private readonly budgetService: BudgetService,
+		private readonly utilsService: UtilsService,
+		private readonly router: Router
 	) { }
 
 	ngOnInit(): void {

@@ -12,8 +12,8 @@ import { IMaterialRequest } from '../interfaces/material/MaterialRequest';
     providedIn: 'root',
 })
 export class MaterialService {
-    constructor(private http: HttpClient,
-        private utilsService: UtilsService
+    constructor(private readonly http: HttpClient,
+        private readonly utilsService: UtilsService
     ) { }
 
     add(material: IMaterial): Observable<any> {

@@ -12,8 +12,8 @@ import { IWork } from '../models/Work';
     providedIn: 'root',
 })
 export class WorkService {
-    constructor(private http: HttpClient,
-        private utilsService: UtilsService
+    constructor(private readonly http: HttpClient,
+        private readonly utilsService: UtilsService
     ) { }
 
     add(work: IWork): Observable<any> {

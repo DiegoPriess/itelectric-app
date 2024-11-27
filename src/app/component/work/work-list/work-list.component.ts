@@ -37,9 +37,9 @@ export class WorkListComponent {
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 
 	constructor(
-		private workService: WorkService,
-		private utilsService: UtilsService,
-		private router: Router
+		private readonly workService: WorkService,
+		private readonly utilsService: UtilsService,
+		private readonly router: Router
 	) { }
 
 	ngOnInit(): void {

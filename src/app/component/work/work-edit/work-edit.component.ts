@@ -38,11 +38,11 @@ export class WorkEditComponent {
 	selectedMaterialIds: number[] = [];
 	selectedMaterials: IMaterial[] = [];
 
-	constructor(private fb: FormBuilder,
-		private workService: WorkService,
-		private utilsService: UtilsService,
-		private router: Router,
-		private route: ActivatedRoute) {
+	constructor(private readonly fb: FormBuilder,
+		private readonly workService: WorkService,
+		private readonly utilsService: UtilsService,
+		private readonly router: Router,
+		private readonly route: ActivatedRoute) {
 		this.form = this.fb.group({
 			id: [''],
 			name: ['', Validators.required],

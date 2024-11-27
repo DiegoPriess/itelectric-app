@@ -11,7 +11,8 @@ import { IEnum } from '../interfaces/Enum';
   providedIn: 'root',
 })
 export class EnumService {
-  constructor(private http: HttpClient, private utilsService: UtilsService) { }
+  constructor(private readonly http: HttpClient,
+    private readonly utilsService: UtilsService) { }
 
   listUnitOfMeasure(): Observable<IEnum[]> {
     const headers = this.utilsService.getHeader()

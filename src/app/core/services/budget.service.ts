@@ -7,15 +7,14 @@ import { UtilsService } from '../utils/utils.service';
 import { Page } from '../interfaces/Page';
 import { IBudget } from '../models/Budget';
 import { IBudgetResponse } from '../interfaces/budget/BudgetResponse';
-import { IWorkRequest } from '../interfaces/work/WorkRequest';
 import { IBudgetRequest } from '../interfaces/budget/BudgetRequest';
 
 @Injectable({
     providedIn: 'root',
 })
 export class BudgetService {
-    constructor(private http: HttpClient,
-        private utilsService: UtilsService
+    constructor(private readonly http: HttpClient,
+        private readonly utilsService: UtilsService
     ) { }
 
     add(budget: IBudget): Observable<any> {

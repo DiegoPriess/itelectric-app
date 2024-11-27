@@ -34,7 +34,7 @@ export class BudgetCustomerCardListComponent implements OnInit {
   pageSize: number = 10;
   pageIndex: number = 0;
 
-  constructor(private budgetService: BudgetService) {}
+  constructor(private readonly budgetService: BudgetService) {}
 
   ngOnInit(): void {
     this.fetchBudgets();

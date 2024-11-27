@@ -9,7 +9,7 @@ import { ILogin } from '../interfaces/User/login';
 	providedIn: 'root',
 })
 export class UserService {
-	constructor(private http: HttpClient) { }
+	constructor(private readonly http: HttpClient) { }
 
 	login(email: string, password: string): Observable<ILogin> {
 		return this.http.post<ILogin>(`${BASE_URL}/user/login`, { email, password });

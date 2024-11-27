@@ -33,11 +33,11 @@ export class MaterialViewComponent {
   unitOfMeasureList: IEnum[] = [];
   materialId!: number;
 
-  constructor(private fb: FormBuilder,
-    private enumService: EnumService,
-    private materialService: MaterialService,
-    private router: Router,
-    private route: ActivatedRoute) {
+  constructor(private readonly fb: FormBuilder,
+    private readonly enumService: EnumService,
+    private readonly materialService: MaterialService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute) {
     this.form = this.fb.group({
       name: [''],
       price: [''],

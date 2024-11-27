@@ -32,11 +32,11 @@ export class MaterialCreateComponent {
   form!: FormGroup;
   unitOfMeasureList: IEnum[] = [];
 
-  constructor(private fb: FormBuilder,
-              private enumService: EnumService,
-              private materialService: MaterialService,
-              private utilsService: UtilsService,
-              private router: Router) {
+  constructor(private readonly fb: FormBuilder,
+              private readonly enumService: EnumService,
+              private readonly materialService: MaterialService,
+              private readonly utilsService: UtilsService,
+              private readonly router: Router) {
     this.form = this.fb.group({
       name: ['', Validators.required],
       price: ['', [Validators.required, Validators.pattern('^[0-9]+(.[0-9]{0,2})?$')]],

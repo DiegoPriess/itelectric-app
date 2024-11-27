@@ -31,10 +31,10 @@ export class WorkViewComponent {
 	selectedMaterialIds: number[] = [];
 	selectedMaterials: IMaterial[] = [];
 
-	constructor(private fb: FormBuilder,
-		private workService: WorkService,
-		private router: Router,
-		private route: ActivatedRoute) {
+	constructor(private readonly fb: FormBuilder,
+		private readonly workService: WorkService,
+		private readonly router: Router,
+		private readonly route: ActivatedRoute) {
 		this.form = this.fb.group({
 			id: [''],
 			name: ['', Validators.required],

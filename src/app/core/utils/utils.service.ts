@@ -8,7 +8,7 @@ import { SuccessSnackbarComponent } from '../../component/success-snackbar/succe
 	providedIn: 'root',
 })
 export class UtilsService {
-    constructor(private snackbar: MatSnackBar) { }
+    constructor(private readonly snackbar: MatSnackBar) { }
 
 	getHeader() {
         const token = sessionStorage.getItem('token');

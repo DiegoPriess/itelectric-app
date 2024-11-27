@@ -38,7 +38,7 @@ import { CommonModule } from '@angular/common';
 export class ErrorSnackbarComponent {
 	constructor(
 		@Inject(MAT_SNACK_BAR_DATA) public data: any,
-		private snackBarRef: MatSnackBarRef<ErrorSnackbarComponent>
+		private readonly snackBarRef: MatSnackBarRef<ErrorSnackbarComponent>
 	) { }
 
 	onClose() {

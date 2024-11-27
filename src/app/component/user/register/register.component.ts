@@ -25,10 +25,10 @@ import { UtilsService } from '../../../core/utils/utils.service';
 export class RegisterComponent implements OnInit {
   form!: FormGroup;
 
-  constructor(private fb: FormBuilder, 
-    private utilsService: UtilsService,
-    private userService: UserService, 
-    private router: Router) { }
+  constructor(private readonly fb: FormBuilder, 
+    private readonly utilsService: UtilsService,
+    private readonly userService: UserService, 
+    private readonly router: Router) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({

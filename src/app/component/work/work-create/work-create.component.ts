@@ -37,10 +37,10 @@ export class WorkCreateComponent {
   selectedMaterials: IMaterial[] = [];
 
   constructor(
-    private fb: FormBuilder,
-    private workService: WorkService,
-    private utilsService: UtilsService,
-    private router: Router
+    private readonly fb: FormBuilder,
+    private readonly workService: WorkService,
+    private readonly utilsService: UtilsService,
+    private readonly router: Router
   ) {
     this.form = this.fb.group({
       name: ['', Validators.required],

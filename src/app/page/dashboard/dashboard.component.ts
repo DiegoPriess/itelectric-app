@@ -30,11 +30,11 @@ export class DashboardComponent implements OnDestroy {
         { title: "Trabalhos", link: "trabalhos", show: sessionStorage.getItem("role") === "ROLE_OWNER" },
         { title: "Materiais", link: "materiais", show: sessionStorage.getItem("role") === "ROLE_OWNER" }
     ];
-    private mobileQuerySubscription: Subscription;
+    private readonly mobileQuerySubscription: Subscription;
     isOpen: boolean = true;
 
-    constructor(private breakpointObserver: BreakpointObserver,
-        private router: Router
+    constructor(private readonly breakpointObserver: BreakpointObserver,
+        private readonly router: Router
     ) {
         this.mobileQuerySubscription = this.breakpointObserver.observe([Breakpoints.Handset])
             .subscribe((result: BreakpointState) => {

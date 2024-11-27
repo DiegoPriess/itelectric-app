@@ -36,7 +36,7 @@ export class WorkCardListComponent implements OnInit {
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 
 	constructor(
-		private workService: WorkService
+		private readonly workService: WorkService
 	) { }
 
 	ngOnInit(): void {

@@ -37,9 +37,9 @@ export class MaterialListComponent implements OnInit {
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 
 	constructor(
-		private materialService: MaterialService,
-		private utilsService: UtilsService,
-		private router: Router
+		private readonly materialService: MaterialService,
+		private readonly utilsService: UtilsService,
+		private readonly router: Router
 	) { }
 
 	ngOnInit(): void {

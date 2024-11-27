@@ -43,11 +43,11 @@ export class BudgetEditComponent {
   selectedWorks: IWork[] = [];
   budgetId!: number;
 
-  constructor(private fb: FormBuilder,
-    private budgetService: BudgetService,
-    private utilsService: UtilsService,
-    private router: Router,
-    private route: ActivatedRoute) {
+  constructor(private readonly fb: FormBuilder,
+    private readonly budgetService: BudgetService,
+    private readonly utilsService: UtilsService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute) {
     this.form = this.fb.group({
       id: [''],
       deliveryForecast: ['', Validators.required],
