@@ -42,6 +42,9 @@ jobs:
         run: |
           ng test --code-coverage --watch=false --browsers=ChromeHeadlessNoSandbox
 
+      - name: List project files
+        run: ls -R src
+  
       - name: List coverage files
         run: ls -R coverage
 
@@ -52,9 +55,9 @@ jobs:
           npx sonar-scanner \
           -Dsonar.projectKey=DiegoPriess_itelectric-app \
           -Dsonar.organization=diegopriess \
-          -Dsonar.sources=src/app/componet \
+          -Dsonar.sources=src/app \
           -Dsonar.exclusions="**/*.spec.ts,**/node_modules/**" \
-          -Dsonar.tests=src/app/component \
+          -Dsonar.tests=src/app \
           -Dsonar.test.inclusions="**/*.spec.ts" \
           -Dsonar.javascript.lcov.reportPaths=coverage/itelectric-app/lcov.info \
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
