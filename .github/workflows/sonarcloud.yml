@@ -54,7 +54,7 @@ jobs:
           -Dsonar.organization=diegopriess \
           -Dsonar.sources=src/app/componet \
           -Dsonar.exclusions="**/*.spec.ts,**/node_modules/**" \
-          -Dsonar.tests=src/app/componet \
+          -Dsonar.tests=src/app/component \
           -Dsonar.test.inclusions="**/*.spec.ts" \
           -Dsonar.javascript.lcov.reportPaths=coverage/itelectric-app/lcov.info \
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
