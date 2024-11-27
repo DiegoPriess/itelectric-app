@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MaterialViewComponent } from './material-view.component';
+import { MaterialFormComponent } from './material-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
 
-describe('MaterialViewComponent', () => {
-  let component: MaterialViewComponent;
-  let fixture: ComponentFixture<MaterialViewComponent>;
+describe('MaterialFormComponent', () => {
+  let component: MaterialFormComponent;
+  let fixture: ComponentFixture<MaterialFormComponent>;
 
   beforeEach(async () => {
 
     await TestBed.configureTestingModule({
-      imports: [MaterialViewComponent, ReactiveFormsModule, HttpClientTestingModule],
+      imports: [MaterialFormComponent, ReactiveFormsModule, HttpClientTestingModule],
       providers: [
         {
           provide: ActivatedRoute,
@@ -33,11 +33,11 @@ describe('MaterialViewComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(MaterialViewComponent);
+    fixture = TestBed.createComponent(MaterialFormComponent);
     component = fixture.componentInstance;
   });
 
-  it('must create component', () => {
+  it('deve criar o componente', () => {
     expect(component).toBeTruthy();
   });
 });
