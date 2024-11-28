@@ -6,11 +6,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
 import { UtilsService } from '../../../core/utils/utils.service';
 import { Page } from '../../../core/interfaces/Page';
 import { IBudget } from '../../../core/models/Budget';
 import { BudgetService } from '../../../core/services/budget.service';
+import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
 	selector: 'app-budget-list',
@@ -39,7 +41,8 @@ export class BudgetListComponent {
 	constructor(
 		private readonly budgetService: BudgetService,
 		private readonly utilsService: UtilsService,
-		private readonly router: Router
+		private readonly router: Router,
+		private readonly dialog: MatDialog
 	) { }
 
 	ngOnInit(): void {
@@ -70,10 +73,20 @@ export class BudgetListComponent {
 	}
 
 	delete(id: number): void {
-		this.budgetService.delete(id).subscribe({
-			next: () => {
-				this.loadData();
-				this.utilsService.showSuccessMessage("Orçamento removido com sucesso!");
+		const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+			data: {
+				message: 'Tem certeza que deseja excluir este orçamento?'
+			}
+		});
+
+		dialogRef.afterClosed().subscribe(result => {
+			if (result) {
+				this.budgetService.delete(id).subscribe({
+					next: () => {
+						this.loadData();
+						this.utilsService.showSuccessMessage("Orçamento removido com sucesso!");
+					}
+				});
 			}
 		});
 	}

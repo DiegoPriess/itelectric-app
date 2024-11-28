@@ -6,11 +6,13 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
 import { IMaterial } from '../../../core/models/Material';
 import { MaterialService } from '../../../core/services/material.service';
 import { Page } from '../../../core/interfaces/Page';
 import { UtilsService } from '../../../core/utils/utils.service';
+import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
 	selector: 'app-material-list',
@@ -39,7 +41,8 @@ export class MaterialListComponent implements OnInit {
 	constructor(
 		private readonly materialService: MaterialService,
 		private readonly utilsService: UtilsService,
-		private readonly router: Router
+		private readonly router: Router,
+		private dialog: MatDialog
 	) { }
 
 	ngOnInit(): void {
@@ -70,10 +73,20 @@ export class MaterialListComponent implements OnInit {
 	}
 
 	delete(id: number): void {
-		this.materialService.delete(id).subscribe({
-			next: () => {
-				this.loadData();
-				this.utilsService.showSuccessMessage("Material removido com sucesso!");
+		const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+			data: {
+				message: 'Tem certeza que deseja excluir este material?'
+			}
+		});
+
+		dialogRef.afterClosed().subscribe(result => {
+			if (result) {
+				this.materialService.delete(id).subscribe({
+					next: () => {
+						this.loadData();
+						this.utilsService.showSuccessMessage("Material removido com sucesso!");
+					}
+				});
 			}
 		});
 	}

@@ -5,12 +5,14 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 import { UtilsService } from '../../../core/utils/utils.service';
 import { Page } from '../../../core/interfaces/Page';
 import { IWork } from '../../../core/models/Work';
 import { WorkService } from '../../../core/services/work.service';
-import { Router } from '@angular/router';
+import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
 	selector: 'app-work-list',
@@ -39,7 +41,8 @@ export class WorkListComponent {
 	constructor(
 		private readonly workService: WorkService,
 		private readonly utilsService: UtilsService,
-		private readonly router: Router
+		private readonly router: Router,
+		private readonly dialog: MatDialog
 	) { }
 
 	ngOnInit(): void {
@@ -70,10 +73,20 @@ export class WorkListComponent {
 	}
 
 	delete(id: number): void {
-		this.workService.delete(id).subscribe({
-			next: () => {
-				this.loadData();
-				this.utilsService.showSuccessMessage("Trabalho removido com sucesso!");
+		const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+			data: {
+				message: 'Tem certeza que deseja excluir este trabalho?'
+			}
+		});
+
+		dialogRef.afterClosed().subscribe(result => {
+			if (result) {
+				this.workService.delete(id).subscribe({
+					next: () => {
+						this.loadData();
+						this.utilsService.showSuccessMessage("Trabalho removido com sucesso!");
+					}
+				});
 			}
 		});
 	}

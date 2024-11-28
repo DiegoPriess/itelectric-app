@@ -37,7 +37,7 @@ describe('MaterialFormComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('deve criar o componente', () => {
+  it('must create component', () => {
     expect(component).toBeTruthy();
   });
 });
