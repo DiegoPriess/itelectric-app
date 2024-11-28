@@ -7,9 +7,9 @@
     "build": "ng build",
     "build:production": "ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
-    "test": "jest --watchAll",
-    "test:ci": "jest --ci",
-    "coverage": "jest --coverage"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage"
   },
   "private": true,
   "dependencies": {
