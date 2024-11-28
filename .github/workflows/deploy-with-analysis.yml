@@ -1,14 +1,46 @@
-name: Deploy to AWS
+name: Deploy AWS with Analisys
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build:
+  sonarcloud:
+    name: SonarCloud
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests with coverage
+        run: npm run test
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info
+
+  deploy:
+    name: Deploy to AWS
+    runs-on: ubuntu-latest
+    needs: sonarcloud
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -37,17 +69,17 @@ jobs:
             sudo chown -R ec2-user:ec2-user /home/ec2-user/iteletric-app
             sudo chmod -R 755 /home/ec2-user/iteletric-app
 
-            - name: Clean target directory on Lightsail
-            uses: appleboy/ssh-action@master
-            with:
-              host: ${{ secrets.HOST }}
-              username: ${{ secrets.USERNAME }}
-              key: ${{ secrets.SSH_KEY }}
-              port: 22
-              script: |
-                echo "Cleaning target directory..."
-                sudo rm -rf /home/ec2-user/iteletric-app/*
-    
+      - name: Clean target directory on Lightsail
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          script: |
+            echo "Cleaning target directory..."
+            sudo rm -rf /home/ec2-user/iteletric-app/*
+
       - name: Copy files to Lightsail
         uses: appleboy/scp-action@master
         with:
@@ -57,7 +89,7 @@ jobs:
           port: 22
           source: "dist/**/*"
           target: "/home/ec2-user/iteletric-app"
-    
+
       - name: Set correct permissions
         uses: appleboy/ssh-action@master
         with:
@@ -69,7 +101,7 @@ jobs:
             echo "Setting correct permissions..."
             sudo chmod -R 755 /home/ec2-user/iteletric-app
             sudo chown -R nginx:nginx /home/ec2-user/iteletric-app
-    
+
       - name: Restart Nginx
         uses: appleboy/ssh-action@master
         with:
@@ -80,7 +112,7 @@ jobs:
           script: |
             echo "Restarting Nginx..."
             sudo systemctl restart nginx
-    
+
       - name: Verify Deployment
         uses: appleboy/ssh-action@master
         with:
@@ -90,4 +122,4 @@ jobs:
           port: 22
           script: |
             echo "Verifying deployment..."
-            curl -I http://localhost    
+            curl -I http://localhost
