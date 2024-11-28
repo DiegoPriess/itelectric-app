@@ -46,15 +46,32 @@ export class BudgetCreateComponent {
     private readonly utilsService: UtilsService,
     private readonly router: Router
   ) {
-    this.form = this.fb.group({
-      deliveryForecast: ['', Validators.required],
-      customerEmail: [null, [Validators.required, Validators.email]],
-    });
+    this.form = this.fb.group(
+      {
+        deliveryForecast: ['', Validators.required],
+        customerEmail: [null, [Validators.required, Validators.email]],
+        confirmEmail: [null, [Validators.required, Validators.email]]
+      },
+      {
+        validators: this.emailMatchValidator
+      }
+    );
+  }
+
+  emailMatchValidator(formGroup: FormGroup) {
+    const email = formGroup.get('customerEmail')?.value;
+    const confirmEmail = formGroup.get('confirmEmail')?.value;
+
+    if (email && confirmEmail && email !== confirmEmail) {
+      formGroup.get('confirmEmail')?.setErrors({ mismatch: true });
+    } else {
+      formGroup.get('confirmEmail')?.setErrors(null);
+    }
   }
 
   onSelectedWorksChange(works: IWork[]) {
     this.selectedWorksIds = works.map(work => work.id);
-    this.selectedWorks = works
+    this.selectedWorks = works;
   }
 
   onSubmit() {

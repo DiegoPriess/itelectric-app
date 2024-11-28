@@ -24,6 +24,11 @@
         <input matInput type="email" formControlName="customerEmail" />
       </mat-form-field>
 
+      <mat-form-field appearance="fill">
+        <mat-label>Confirmar Email</mat-label>
+        <input matInput type="email" formControlName="confirmEmail" />
+      </mat-form-field>
+
       <div class="work-form">
         <app-work-card-list
           (selectedWorksChange)="onSelectedWorksChange($event)"
