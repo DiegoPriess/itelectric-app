@@ -28,6 +28,11 @@ jobs:
       - name: Run tests with coverage
         run: npm test --coverage --reporters=jest-sonar-reporter
 
+      - name: Debugging after running tests
+        run: |
+          echo "Test finished with exit code $?"
+          cat ./coverage/lcov-report/index.html
+
       - name: Upload coverage report to SonarCloud
         uses: SonarSource/sonarcloud-github-action@master
         env:
