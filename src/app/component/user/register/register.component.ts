@@ -26,19 +26,37 @@ export class RegisterComponent implements OnInit {
   form!: FormGroup;
 
   constructor(private readonly fb: FormBuilder, 
-    private readonly utilsService: UtilsService,
-    private readonly userService: UserService, 
-    private readonly router: Router) { }
+              private readonly utilsService: UtilsService,
+              private readonly userService: UserService, 
+              private readonly router: Router) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
       name: [null, [Validators.required]],
       email: [null, [Validators.required, Validators.email]],
-      password: [null, Validators.required]
+      password: [null, Validators.required],
+      confirmPassword: [null, Validators.required]
+    }, { 
+      validators: this.passwordMatchValidator 
     });
   }
 
+  passwordMatchValidator(formGroup: FormGroup) {
+    const password = formGroup.get('password')?.value;
+    const confirmPassword = formGroup.get('confirmPassword')?.value;
+
+    if (password && confirmPassword && password !== confirmPassword) {
+      formGroup.get('confirmPassword')?.setErrors({ mismatch: true });
+    } else {
+      formGroup.get('confirmPassword')?.setErrors(null);
+    }
+  }
+
   register() {
+    if (this.form.invalid) {
+      return;
+    }
+
     this.userService
       .register(
         this.form.get('name')?.value,
@@ -48,6 +66,5 @@ export class RegisterComponent implements OnInit {
         this.router.navigateByUrl("/entrar");
         this.utilsService.showSuccessMessage("Usuário criado com sucesso!");
       });
-
   }
 }
