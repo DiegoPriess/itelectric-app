@@ -38,7 +38,8 @@ export class WorkViewComponent {
 		this.form = this.fb.group({
 			id: [''],
 			name: ['', Validators.required],
-			price: ['', [Validators.required, Validators.pattern('^[0-9]+(.[0-9]{0,2})?$')]]
+			laborPrice: ['', [Validators.required, Validators.pattern('^[0-9]+(.[0-9]{0,2})?$')]],
+			materialPrice: ['', [Validators.required, Validators.pattern('^[0-9]+(.[0-9]{0,2})?$')]]
 		});
 	}
 
@@ -53,7 +54,8 @@ export class WorkViewComponent {
 				this.form.patchValue({
 					id: work.id,
 					name: work.name,
-					price: work.price,
+					laborPrice: work.laborPrice,
+					materialPrice: work.materialPrice,
 				});
 				this.onSelectedMaterialsChange(work.materialList)
 			}

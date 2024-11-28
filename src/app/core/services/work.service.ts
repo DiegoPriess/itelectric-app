@@ -30,7 +30,7 @@ export class WorkService {
         const headers = this.utilsService.getHeader();
         const request: IWorkRequest = {
             name: work.name,
-            price: work.price,
+            laborPrice: work.laborPrice,
             materialIdList: selectedMaterialIds
         }
         return this.http.put<IWork>(`${BASE_URL}/work/${work.id}`, request, { headers });

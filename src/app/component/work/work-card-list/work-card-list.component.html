@@ -22,8 +22,7 @@
     >
       <mat-card-content class="card-content">
         <p class="card-name">{{ element.name }}</p>
-        <p><strong>Preço:</strong> {{ +element.price | currency : "BRL" }}</p>
-        <p><strong>Quantidade de materiais:</strong> {{ element.materialList.length }}</p>
+        <p><strong>Preço:</strong> {{ (element.laborPrice + element.materialPrice) | currency : "BRL" }}</p>
       </mat-card-content>
     </mat-card>
   </div>

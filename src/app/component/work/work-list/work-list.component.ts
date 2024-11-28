@@ -32,7 +32,7 @@ export class WorkListComponent {
 	pageSize = 10;
 	pageIndex = 0;
 	searchQuery: string = '';
-	displayedColumns: string[] = ['name', 'price', 'quantityOfMaterials', 'actions'];
+	displayedColumns: string[] = ['name', 'laborPrice', 'materialPrice', 'quantityOfMaterials', 'actions'];
 
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 

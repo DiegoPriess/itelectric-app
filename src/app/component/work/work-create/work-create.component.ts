@@ -44,7 +44,7 @@ export class WorkCreateComponent {
   ) {
     this.form = this.fb.group({
       name: ['', Validators.required],
-      price: ['', [Validators.required, Validators.pattern('^[0-9]+(.[0-9]{0,2})?$')]]
+      laborPrice: ['', [Validators.required, Validators.pattern('^[0-9]+(.[0-9]{0,2})?$')]]
     });
   }
 

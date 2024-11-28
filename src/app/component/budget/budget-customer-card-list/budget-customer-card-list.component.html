@@ -37,7 +37,7 @@
               <mat-list>
                 <mat-list-item *ngFor="let work of budget.workList">
                   <p mat-line>{{ work.name }}</p>
-                  <p mat-line>Preço: R$ {{ work.price | number: '1.2-2' }}</p>
+                  <p mat-line>Preço: R$ {{ (work.laborPrice + work.materialPrice) | number: '1.2-2' }}</p>
                 </mat-list-item>
               </mat-list>
             </div>

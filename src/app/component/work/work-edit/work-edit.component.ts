@@ -46,7 +46,7 @@ export class WorkEditComponent {
 		this.form = this.fb.group({
 			id: [''],
 			name: ['', Validators.required],
-			price: ['', [Validators.required, Validators.pattern('^[0-9]+(.[0-9]{0,2})?$')]]
+			laborPrice: ['', [Validators.required, Validators.pattern('^[0-9]+(.[0-9]{0,2})?$')]]
 		});
 	}
 
@@ -61,7 +61,7 @@ export class WorkEditComponent {
 				this.form.patchValue({
 					id: work.id,
 					name: work.name,
-					price: work.price,
+					laborPrice: work.laborPrice,
 				});
 				this.onSelectedMaterialsChange(work.materialList)
 			}

@@ -8,17 +8,28 @@
 
   <div class="content">
     <form [formGroup]="form">
-      <mat-form-field appearance="fill" readonly>
+      <mat-form-field appearance="fill">
         <mat-label>Nome</mat-label>
-        <input matInput formControlName="name" />
+        <input matInput formControlName="name" readonly/>
       </mat-form-field>
 
-      <mat-form-field appearance="fill" readonly>
-        <mat-label>Preço</mat-label>
+      <mat-form-field appearance="fill">
+        <mat-label>Preço Mão de Obra</mat-label>
         <input
           matInput
-          [value]="form.get('totalValue')?.value | currency : 'BRL' : 'symbol'"
-          formControlName="price"
+          [value]="form.get('laborPrice')?.value | currency : 'BRL' : 'symbol'"
+          formControlName="laborPrice"
+          readonly
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Preço Materiais</mat-label>
+        <input
+          matInput
+          [value]="form.get('materialPrice')?.value | currency : 'BRL' : 'symbol'"
+          formControlName="materialPrice"
+          readonly
         />
       </mat-form-field>
 

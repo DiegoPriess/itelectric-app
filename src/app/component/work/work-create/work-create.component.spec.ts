@@ -26,6 +26,6 @@ describe('WorkCreateComponent', () => {
   it('must init empty form', () => {
     expect(component.form).toBeDefined();
     expect(component.form.get('name')?.value).toEqual('');
-    expect(component.form.get('price')?.value).toEqual('');
+    expect(component.form.get('laborPrice')?.value).toEqual('');
   });
 });
