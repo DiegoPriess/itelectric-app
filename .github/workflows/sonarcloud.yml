@@ -17,15 +17,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install dependencies for Chrome
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y wget gnupg
-          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-          echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
-
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -35,10 +26,18 @@ jobs:
         run: npm install
 
       - name: Run tests with coverage
-        run: xvfb-run -s "-screen 0 1920x1080x24" npm test -- --coverage
+        run: npm test --coverage --reporters=jest-sonar-reporter
 
       - name: Upload coverage report to SonarCloud
         uses: SonarSource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
