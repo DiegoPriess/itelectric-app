@@ -8,7 +8,7 @@ Este software tem como objetivo desenvolver uma ferramenta que auxilie eletricis
 - Aumento da produtividade: Automatização de tarefas repetitivas e redução do tempo gasto na elaboração de orçamentos.
 - Melhora na organização: Centralização de informações e fácil acesso aos dados de cada projeto.
 - Redução de erros: Padronização de processos e minimização de riscos de erros manuais.
-- Satisfação do cliente: Agilidade na entrega de orçamentos e acompanhamento transparente do projeto através de envio de emails."
+- Satisfação do cliente: Agilidade na entrega de orçamentos e acompanhamento transparente do projeto através de envio de emails.
 
 ## Boas práticas de desenvolvimento aplicadas
 - O projeto foi desenvolvido com componentes Standalone, garantindo maior independência e modularidade entre os diferentes módulos. Isso proporciona flexibilidade no desenvolvimento e facilita a manutenção a longo prazo.
@@ -17,10 +17,9 @@ Este software tem como objetivo desenvolver uma ferramenta que auxilie eletricis
 - Testes unitários implementados utilizando Jest, assegurando a qualidade e confiabilidade do código. Isso reduz o risco de bugs e melhora a robustez do sistema.
 - Implementação de interceptores de erros, centralizando o controle de falhas nas requisições. Essa abordagem facilita a gestão eficiente de exceções e melhora a experiência do usuário ao lidar com erros.
 
-Esse é o FRONT-END do projeto, que também conta com um back-end disponíveL no repositório:
-- [BACK-END](https://github.com/DiegoPriess/itelectric-api)
+Esse é o FRONT-END do projeto, que também conta com um back-end disponíveL no repositório: [BACK-END](https://github.com/DiegoPriess/itelectric-api)
 
-## [Jira](https://diegopriessdev.atlassian.net/jira/software/projects/KAN/boards/1)
+### Dashboard Kanban [Jira](https://diegopriessdev.atlassian.net/jira/software/projects/KAN/boards/1)
 
 ## Arquitetura C4
 - [NV.1](https://drive.google.com/file/d/1cjtWxbsxG7hVC8DEFkOR6WQd6ZeGkPWz/view?usp=sharing)
