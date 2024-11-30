@@ -15,11 +15,7 @@
 
       <mat-form-field appearance="fill">
         <mat-label>Preço mão de obra</mat-label>
-        <input
-          matInput
-          [value]="form.get('laborPrice')?.value | currency : 'BRL' : 'symbol'"
-          formControlName="laborPrice"
-        />
+        <input matInput formControlName="laborPrice" />
       </mat-form-field>
 
       <div class="material-form">
