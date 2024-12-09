@@ -1,0 +1,27 @@
+<div class="material-select-list">
+  <mat-form-field appearance="outline" class="material-select" *ngIf="!disabled">
+    <mat-select
+      placeholder="Selecione os materiais"
+      [value]="selectedMaterialObjects"
+      multiple
+      panelClass="custom-overlay-pane"
+      (selectionChange)="updateSelection($event.value)"
+    >
+      <mat-option *ngFor="let material of dataSource" [value]="material">
+        {{ material.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="selected-materials-box" *ngIf="disabled">
+    <p>Materiais Selecionados</p>
+    <mat-card
+      *ngFor="let material of selectedMaterialObjects"
+      class="mat-elevation-z4 card-item"
+    >
+      <mat-card-content class="card-content">
+        {{ material.name }}
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

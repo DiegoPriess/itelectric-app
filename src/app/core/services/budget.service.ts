@@ -8,6 +8,7 @@ import { Page } from '../interfaces/Page';
 import { IBudget } from '../models/Budget';
 import { IBudgetResponse } from '../interfaces/budget/BudgetResponse';
 import { IBudgetRequest } from '../interfaces/budget/BudgetRequest';
+import { IBudgetEditRequest } from '../interfaces/budget/BudgetEditRequest';
 
 @Injectable({
     providedIn: 'root',
@@ -17,7 +18,7 @@ export class BudgetService {
         private readonly utilsService: UtilsService
     ) { }
 
-    add(budget: IBudget): Observable<any> {
+    add(budget: IBudgetRequest): Observable<any> {
         const headers = this.utilsService.getHeader();
         return this.http.post<IBudget>(`${BASE_URL}/budget`, budget, { headers });
     }
@@ -27,10 +28,8 @@ export class BudgetService {
         return this.http.get<IBudget>(`${BASE_URL}/budget/${id}`, { headers });
     }
 
-    edit(budget: IBudgetRequest, selectedWorksIds: number[]): Observable<any> {
+    edit(budget: IBudgetEditRequest): Observable<any> {
         const headers = this.utilsService.getHeader();
-        budget.workIdList = selectedWorksIds
-
         return this.http.put<IBudget>(`${BASE_URL}/budget/${budget.id}`, budget, { headers });
     }
 

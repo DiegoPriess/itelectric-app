@@ -1,0 +1,66 @@
+@import "./variables.scss";
+
+.button-success {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $white;
+  background-color: $principal-color;
+  border-radius: 10px;
+  padding: 5px 15px;
+  margin: 0;
+
+  &:hover {
+    background-color: darken($principal-color, 10%);
+  }
+}
+
+.table-standard {
+  th,
+  td {
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
+    min-height: 80px;
+  }
+
+  th {
+    background-color: #f0f0f0;
+  }
+
+  tr:hover {
+    transition: opacity 0.3s ease;
+    background-color: #e0e0e0;
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 30px;
+  padding: 0 10px;
+
+  .modal-title {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #333;
+  }
+
+  button[mat-icon-button] {
+    &:hover {
+      color: #ff5252;
+    }
+
+    mat-icon {
+      font-size: 24px;
+    }
+  }
+}
+
+.modal-body {
+  padding: 1.5rem;
+  max-height: 90vh;
+  overflow-y: auto;
+}

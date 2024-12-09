@@ -5,14 +5,15 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
-import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
 
 import { UtilsService } from '../../../core/utils/utils.service';
 import { Page } from '../../../core/interfaces/Page';
 import { IBudget } from '../../../core/models/Budget';
 import { BudgetService } from '../../../core/services/budget.service';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
+import { BudgetFormComponent } from '../budget-form/budget-form.component';
+import { ConfirmationModalComponent } from '../../confirmation-modal/confirmation-modal.component';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
 	selector: 'app-budget-list',
@@ -26,7 +27,8 @@ import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmat
 		MatInputModule
 	],
 	templateUrl: './budget-list.component.html',
-	styleUrl: './budget-list.component.scss'
+	styleUrl: './budget-list.component.scss',
+	providers: [BsModalService],
 })
 export class BudgetListComponent {
 	dataSource = new MatTableDataSource<IBudget>();
@@ -35,14 +37,14 @@ export class BudgetListComponent {
 	pageIndex = 0;
 	searchQuery: string = '';
 	displayedColumns: string[] = ['customer', 'deliveryForecast', 'totalValue', 'status', 'actions'];
+	modalRef?: BsModalRef;
 
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 
 	constructor(
 		private readonly budgetService: BudgetService,
 		private readonly utilsService: UtilsService,
-		private readonly router: Router,
-		private readonly dialog: MatDialog
+		private readonly modalService: BsModalService
 	) { }
 
 	ngOnInit(): void {
@@ -72,35 +74,62 @@ export class BudgetListComponent {
 		this.loadData();
 	}
 
-	delete(id: number): void {
-		const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-			data: {
-				message: 'Tem certeza que deseja excluir este orçamento?'
-			}
+	onDelete(id: number): void {
+		this.modalRef = this.modalService.show(ConfirmationModalComponent, {
+			class: 'modal-dialog-centered',
+			initialState: {
+				title: 'Excluir Orçamento',
+				message: 'Tem certeza de que deseja excluir este orçamento?',
+			},
 		});
 
-		dialogRef.afterClosed().subscribe(result => {
-			if (result) {
-				this.budgetService.delete(id).subscribe({
-					next: () => {
-						this.loadData();
-						this.utilsService.showSuccessMessage("Orçamento removido com sucesso!");
-					}
-				});
-			}
+		this.modalRef.content?.confirm.subscribe(() => {
+			this.delete(id);
+		});
+	}
+
+	delete(id: number): void {
+		this.budgetService.delete(id).subscribe({
+			next: () => {
+				this.utilsService.showSuccessMessage('Orçamento removido com sucesso!');
+				this.loadData();
+			},
 		});
 	}
 
 	onCreate(): void {
-		this.router.navigate(['/menu/orcamentos/criar']);
+		this.modalRef = this.modalService.show(BudgetFormComponent, {
+			class: 'modal-dialog-centered modal-lg',
+			backdrop: 'static',
+			keyboard: false,
+			initialState: { mode: 'create' },
+		});
+
+		this.modalRef.onHide?.subscribe(() => {
+			this.loadData();
+		});
 	}
 
 	onEdit(id: number): void {
-		this.router.navigate(['/menu/orcamentos/editar', id]);
+		this.budgetService.get(id).subscribe((budget) => {
+			this.modalRef = this.modalService.show(BudgetFormComponent, {
+				class: 'modal-dialog-centered modal-lg',
+				initialState: { mode: 'edit', budgetData: budget },
+			});
+
+			this.modalRef.onHide?.subscribe(() => {
+				this.loadData();
+			});
+		});
 	}
 
 	onView(id: number): void {
-		this.router.navigate(['/menu/orcamentos/visualizar', id]);
+		this.budgetService.get(id).subscribe((budget) => {
+			this.modalRef = this.modalService.show(BudgetFormComponent, {
+				class: 'modal-dialog-centered modal-lg',
+				initialState: { mode: 'view', budgetData: budget },
+			});
+		});
 	}
 
 	approve(id: number): void {

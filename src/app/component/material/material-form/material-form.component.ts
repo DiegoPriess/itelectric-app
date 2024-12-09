@@ -1,17 +1,17 @@
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { IMaterial } from "../../../core/models/Material";
-import { ActivatedRoute, Router } from "@angular/router";
-import { UtilsService } from "../../../core/utils/utils.service";
-import { MaterialService } from "../../../core/services/material.service";
-import { EnumService } from "../../../core/services/enum.service";
-import { IEnum } from "../../../core/interfaces/Enum";
-import { MatIconModule } from "@angular/material/icon";
-import { MatSelectModule } from "@angular/material/select";
-import { MatButtonModule } from "@angular/material/button";
-import { MatInputModule } from "@angular/material/input";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { CommonModule } from "@angular/common";
-import { Component } from "@angular/core";
+import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BsModalRef } from 'ngx-bootstrap/modal';
+import { MaterialService } from '../../../core/services/material.service';
+import { EnumService } from '../../../core/services/enum.service';
+import { UtilsService } from '../../../core/utils/utils.service';
+import { IEnum } from '../../../core/interfaces/Enum';
+import { IMaterial } from '../../../core/models/Material';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-material-form',
@@ -21,101 +21,91 @@ import { Component } from "@angular/core";
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,
     MatSelectModule,
-    MatIconModule
+    MatIconModule,
   ],
   templateUrl: './material-form.component.html',
-  styleUrl: './material-form.component.scss'
+  styleUrls: ['./material-form.component.scss'],
 })
-export class MaterialFormComponent {
+export class MaterialFormComponent implements OnInit {
+  @Input() mode: 'create' | 'edit' | 'view' = 'create';
+  @Input() materialData?: IMaterial;
+  @Output() closeAction = new EventEmitter<void>();
+
   form!: FormGroup;
   unitOfMeasureList: IEnum[] = [];
-  materialId!: number;
-  mode: 'editar' | 'visualizar' = 'visualizar';
 
   constructor(
     private readonly fb: FormBuilder,
-    private readonly enumService: EnumService,
     private readonly materialService: MaterialService,
+    private readonly enumService: EnumService,
     private readonly utilsService: UtilsService,
-    private readonly router: Router,
-    private readonly route: ActivatedRoute
-  ) {
+    private readonly bsModalRef: BsModalRef
+  ) {}
+
+  ngOnInit(): void {
+    this.initializeForm();
+    this.loadUnitOfMeasures();
+
+    if (this.mode !== 'create' && this.materialData) {
+      this.populateForm(this.materialData);
+    }
+
+    if (this.mode === 'view') {
+      this.form.disable();
+    }
+  }
+
+  initializeForm(): void {
     this.form = this.fb.group({
-      id: [''],
       name: ['', Validators.required],
-      price: ['', [Validators.required, Validators.pattern('^[0-9]+(.[0-9]{0,2})?$')]],
+      price: ['', [Validators.required, Validators.pattern('^[0-9]+(\\.[0-9]{0,2})?$')]],
       quantityUnitMeasure: ['', Validators.required],
-      unitMeasure: ['', Validators.required]
+      unitMeasure: ['', Validators.required],
     });
   }
 
-  ngOnInit() {
-    this.detectMode();
-
-    this.materialId = this.getIdFromUrl();
+  loadUnitOfMeasures(): void {
     this.enumService.listUnitOfMeasure().subscribe((unitOfMeasureList: IEnum[]) => {
       this.unitOfMeasureList = unitOfMeasureList;
-
-      if (this.mode === 'editar' || this.mode === 'visualizar') {
-        this.loadMaterialData();
-      }
-
-      if (this.mode === 'visualizar') {
-        this.form.disable();
-      }
     });
   }
 
-  detectMode() {
-    const url = this.router.url;
-    if (url.includes('/editar')) {
-      this.mode = 'editar';
-    } else if (url.includes('/visualizar')) {
-      this.mode = 'visualizar';
-    }
-  }
-
-  get pageTitle(): string {
-    return this.mode === 'editar' ? 'Editar Material' : 'Visualizar Material';
-  }
-
-  loadMaterialData() {
-    this.materialService.get(this.materialId).subscribe({
-      next: (material: IMaterial) => {
-        this.form.patchValue({
-          id: material.id,
-          name: material.name,
-          price: material.price,
-          quantityUnitMeasure: material.quantityUnitMeasure,
-          unitMeasure: this.unitOfMeasureList.find(u => u.name === material.unitMeasure.name)
-        });
-      }
+  populateForm(material: IMaterial): void {
+    this.form.patchValue({
+      name: material.name,
+      price: material.price,
+      quantityUnitMeasure: material.quantityUnitMeasure,
+      unitMeasure: material.unitMeasure,
     });
   }
 
-  compareUnits(u1: any, u2: any): boolean {
-    return u1 && u2 ? u1.name === u2.name : u1 === u2;
-  }
+  onSubmit(): void {
+    if (this.mode === 'view') return;
 
-  getIdFromUrl(): number {
-    const id = this.route.snapshot.paramMap.get('id');
-    return id ? +id : 0;
-  }
+    const materialRequest = this.form.value;
 
-  back(): void {
-    this.router.navigateByUrl("/menu/materiais");
-  }
-
-  onSubmit() {
-    if (this.mode === 'editar') {
-      this.materialService.edit(this.form.value).subscribe({
+    if (this.mode === 'create') {
+      this.materialService.add(materialRequest).subscribe({
         next: () => {
-          this.router.navigateByUrl("/menu/materiais");
-          this.utilsService.showSuccessMessage("Material alterado com sucesso!");
-        }
+          this.utilsService.showSuccessMessage('Material criado com sucesso!');
+          this.closeModal();
+        },
       });
     }
+
+    if (this.mode === 'edit' && this.materialData) {
+      this.materialService.edit({ ...materialRequest, id: this.materialData.id }).subscribe({
+        next: () => {
+          this.utilsService.showSuccessMessage('Material atualizado com sucesso!');
+          this.closeModal();
+        },
+      });
+    }
+  }
+
+  closeModal(): void {
+    this.bsModalRef.hide();
+    this.closeAction.emit();
   }
 }

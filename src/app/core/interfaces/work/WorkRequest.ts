@@ -1,5 +1,5 @@
 export interface IWorkRequest {
-    name: string
-    laborPrice: number
-    materialIdList: number[]
+  name: string
+  laborPrice: number
+  materialIdList: number[]
 }

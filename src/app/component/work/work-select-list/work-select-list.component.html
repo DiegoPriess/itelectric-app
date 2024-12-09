@@ -1,0 +1,27 @@
+<div class="work-select-list">
+  <mat-form-field appearance="outline" class="work-select" *ngIf="!disabled">
+    <mat-select
+      placeholder="Selecione os trabalhos"
+      [value]="selectedWorkObjects"
+      multiple
+      panelClass="custom-overlay-pane"
+      (selectionChange)="updateSelection($event.value)"
+    >
+      <mat-option *ngFor="let work of dataSource" [value]="work">
+        {{ work.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="selected-works-box" *ngIf="disabled">
+    <p>Trabalhos Selecionados</p>
+    <mat-card
+      *ngFor="let work of selectedWorkObjects"
+      class="mat-elevation-z4 card-item"
+    >
+      <mat-card-content class="card-content">
+        {{ work.name }}
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

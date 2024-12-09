@@ -1,45 +1,50 @@
-<div class="material-form">
-  <div class="header">
-    <button mat-icon-button (click)="back()" aria-label="Voltar">
-      <mat-icon>arrow_back</mat-icon>
+<div class="modal-body">
+  <div class="modal-header">
+    <h2 class="modal-title">
+      {{ mode === 'create' ? 'Novo Material' : mode === 'edit' ? 'Editar Material' : 'Visualizar Material' }}
+    </h2>
+    <button mat-icon-button (click)="closeModal()" aria-label="Fechar">
+      <mat-icon>close</mat-icon>
     </button>
-    <h1>{{ pageTitle }}</h1>
   </div>
 
-  <div class="content">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <mat-form-field appearance="fill">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <mat-form-field appearance="fill" class="w-100">
         <mat-label>Nome</mat-label>
         <input matInput formControlName="name" />
       </mat-form-field>
+    </div>
 
-      <mat-form-field appearance="fill">
+    <div class="mb-3">
+      <mat-form-field appearance="fill" class="w-100">
         <mat-label>Preço</mat-label>
         <input matInput formControlName="price" />
       </mat-form-field>
+    </div>
 
-      <mat-form-field appearance="fill" style="flex: 1">
+    <div class="mb-3">
+      <mat-form-field appearance="fill" class="w-100">
         <mat-label>Quantidade</mat-label>
         <input matInput formControlName="quantityUnitMeasure" />
       </mat-form-field>
+    </div>
 
-      <mat-form-field appearance="fill" style="flex: 1">
+    <div class="mb-3">
+      <mat-form-field appearance="fill" class="w-100">
         <mat-label>Unidade de Medida</mat-label>
-        <mat-select formControlName="unitMeasure" [compareWith]="compareUnits">
-          <mat-option *ngFor="let unit of unitOfMeasureList" [value]="unit">
+        <mat-select formControlName="unitMeasure">
+          <mat-option *ngFor="let unit of unitOfMeasureList" [value]="unit.name">
             {{ unit.label }}
           </mat-option>
         </mat-select>
       </mat-form-field>
+    </div>
 
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        [disabled]="!form.valid"
-      >
+    <div class="modal-footer d-flex justify-content-end">
+      <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
         Salvar
       </button>
-    </form>
-  </div>
+    </div>
+  </form>
 </div>

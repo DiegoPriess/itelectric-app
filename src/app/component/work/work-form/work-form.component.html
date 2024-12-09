@@ -1,0 +1,46 @@
+<div class="modal-body">
+  <div class="modal-header">
+    <h2 class="modal-title">
+      {{ mode === 'create' ? 'Novo Trabalho' : mode === 'edit' ? 'Editar Trabalho' : 'Visualizar Trabalho' }}
+    </h2>
+    <button mat-icon-button (click)="closeModal()" aria-label="Fechar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Nome</mat-label>
+        <input matInput formControlName="name" />
+      </mat-form-field>
+    </div>
+
+    <div class="mb-3">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Preço mão de obra</mat-label>
+        <input matInput formControlName="laborPrice" />
+      </mat-form-field>
+    </div>
+
+    <div class="mb-3">
+      <app-material-select-list
+        [selectedMaterialIds]="selectedMaterialIds"
+        [disabled]="mode === 'view'"
+        (selectedMaterialIdsChange)="onSelectedMaterialsChange($event)"
+      ></app-material-select-list>
+    </div>
+    
+    
+    <div class="modal-footer d-flex justify-content-end">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="!form.valid"
+      >
+        Salvar
+      </button>
+    </div>
+  </form>
+</div>

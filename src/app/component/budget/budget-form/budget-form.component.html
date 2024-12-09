@@ -1,0 +1,77 @@
+<div class="modal-body">
+  <div class="modal-header">
+    <h2 class="modal-title">
+      {{
+        mode === 'create'
+          ? 'Novo Orçamento'
+          : mode === 'edit'
+          ? 'Editar Orçamento'
+          : 'Visualizar Orçamento'
+      }}
+    </h2>
+    <button mat-icon-button (click)="closeModal()" aria-label="Fechar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Data de entrega</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="deliveryForecast"
+          [min]="minDate"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="form.get('deliveryForecast')?.hasError('required')">
+          A data de entrega é obrigatória.
+        </mat-error>
+        <mat-error *ngIf="form.get('deliveryForecast')?.hasError('minDate')">
+          A data de entrega não pode ser no passado.
+        </mat-error>
+        <mat-error *ngIf="form.get('deliveryForecast')?.hasError('invalidDate')">
+          Formato de data inválido.
+        </mat-error>        
+      </mat-form-field>
+    </div>
+
+    <div class="mb-3">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Email do Cliente</mat-label>
+        <input matInput type="email" formControlName="customerEmail" />
+        <mat-error *ngIf="form.get('customerEmail')?.hasError('required')">
+          O email é obrigatório.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="mb-3" *ngIf="mode === 'create'">
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Confirmar Email</mat-label>
+        <input matInput type="email" formControlName="confirmEmail" />
+      </mat-form-field>
+    </div>
+
+    <div class="mb-3">
+      <app-work-select-list
+        [selectedWorkIds]="selectedWorkIds"
+        [disabled]="mode === 'view'"
+        (selectedWorkIdsChange)="onSelectedWorksChange($event)"
+      ></app-work-select-list>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="!form.valid"
+      >
+        {{ mode === 'view' ? 'Fechar' : 'Salvar' }}
+      </button>
+    </div>
+  </form>
+</div>

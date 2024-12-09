@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
 				sessionStorage.setItem("token", response.token);
 				sessionStorage.setItem("role", response.role);
 				if (response.role === "ROLE_OWNER") {
-					this.router.navigateByUrl("/menu/orcamentos");
+					this.router.navigateByUrl("/menu/trabalhos");
 				} else {
 					this.router.navigateByUrl("/menu/orcamentos-cliente");
 				}

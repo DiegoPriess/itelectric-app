@@ -1,18 +1,18 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { Component, ViewChild } from '@angular/core';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 import { IMaterial } from '../../../core/models/Material';
 import { MaterialService } from '../../../core/services/material.service';
 import { Page } from '../../../core/interfaces/Page';
 import { UtilsService } from '../../../core/utils/utils.service';
-import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
+import { MaterialFormComponent } from '../material-form/material-form.component';
+import { ConfirmationModalComponent } from '../../confirmation-modal/confirmation-modal.component';
 
 @Component({
 	selector: 'app-material-list',
@@ -26,28 +26,28 @@ import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmat
 		MatInputModule,
 	],
 	templateUrl: './material-list.component.html',
-	styleUrls: ['./material-list.component.scss']
+	styleUrls: ['./material-list.component.scss'],
+	providers: [BsModalService],
 })
-export class MaterialListComponent implements OnInit {
+export class MaterialListComponent {
 	dataSource = new MatTableDataSource<IMaterial>();
 	totalElements: number = 0;
 	pageSize = 10;
 	pageIndex = 0;
 	searchQuery: string = '';
 	displayedColumns: string[] = ['name', 'price', 'quantityUnitMeasure', 'actions'];
+	modalRef?: BsModalRef;
 
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 
 	constructor(
 		private readonly materialService: MaterialService,
 		private readonly utilsService: UtilsService,
-		private readonly router: Router,
-		private dialog: MatDialog
+		private readonly modalService: BsModalService
 	) { }
 
 	ngOnInit(): void {
 		this.loadData();
-		this.dataSource.paginator = this.paginator;
 	}
 
 	loadData(): void {
@@ -55,11 +55,11 @@ export class MaterialListComponent implements OnInit {
 			next: (page: Page<IMaterial>) => {
 				this.dataSource.data = page.content;
 				this.totalElements = page.totalElements;
-			}
+			},
 		});
 	}
 
-	onPageChange(event: any): void {
+	onPageChange(event: PageEvent): void {
 		this.pageIndex = event.pageIndex;
 		this.pageSize = event.pageSize;
 		this.loadData();
@@ -72,34 +72,61 @@ export class MaterialListComponent implements OnInit {
 		this.loadData();
 	}
 
-	delete(id: number): void {
-		const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-			data: {
-				message: 'Tem certeza que deseja excluir este material?'
-			}
+	onDelete(id: number): void {
+		this.modalRef = this.modalService.show(ConfirmationModalComponent, {
+			class: 'modal-dialog-centered',
+			initialState: {
+				title: 'Excluir Material',
+				message: 'Tem certeza de que deseja excluir este material?',
+			},
 		});
 
-		dialogRef.afterClosed().subscribe(result => {
-			if (result) {
-				this.materialService.delete(id).subscribe({
-					next: () => {
-						this.loadData();
-						this.utilsService.showSuccessMessage("Material removido com sucesso!");
-					}
-				});
-			}
+		this.modalRef.content?.confirm.subscribe(() => {
+			this.delete(id);
+		});
+	}
+
+	delete(id: number): void {
+		this.materialService.delete(id).subscribe({
+			next: () => {
+				this.utilsService.showSuccessMessage('Material removido com sucesso!');
+				this.loadData();
+			},
 		});
 	}
 
 	onCreate(): void {
-		this.router.navigate(['/menu/materiais/criar']);
+		this.modalRef = this.modalService.show(MaterialFormComponent, {
+			class: 'modal-dialog-centered modal-lg',
+			backdrop: 'static',
+			keyboard: false,
+			initialState: { mode: 'create' },
+		});
+
+		this.modalRef.onHide?.subscribe(() => {
+			this.loadData();
+		});
 	}
 
 	onEdit(materialId: number): void {
-		this.router.navigate(['/menu/materiais/editar', materialId]);
+		this.materialService.get(materialId).subscribe((material) => {
+			this.modalRef = this.modalService.show(MaterialFormComponent, {
+				class: 'modal-dialog-centered modal-lg',
+				initialState: { mode: 'edit', materialData: material },
+			});
+
+			this.modalRef.onHide?.subscribe(() => {
+				this.loadData();
+			});
+		});
 	}
 
 	onView(materialId: number): void {
-		this.router.navigate(['/menu/materiais/visualizar', materialId]);
+		this.materialService.get(materialId).subscribe((material) => {
+			this.modalRef = this.modalService.show(MaterialFormComponent, {
+				class: 'modal-dialog-centered modal-lg',
+				initialState: { mode: 'view', materialData: material },
+			});
+		});
 	}
 }

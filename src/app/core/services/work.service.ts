@@ -7,6 +7,7 @@ import { UtilsService } from '../utils/utils.service';
 import { Page } from '../interfaces/Page';
 import { IWorkRequest } from '../interfaces/work/WorkRequest';
 import { IWork } from '../models/Work';
+import { IWorkEditRequest } from '../interfaces/work/WorkEditRequest';
 
 @Injectable({
     providedIn: 'root',
@@ -16,9 +17,9 @@ export class WorkService {
         private readonly utilsService: UtilsService
     ) { }
 
-    add(work: IWork): Observable<any> {
+    add(workRequest: IWorkRequest): Observable<any> {
         const headers = this.utilsService.getHeader();
-        return this.http.post<IWork>(`${BASE_URL}/work`, work, { headers });
+        return this.http.post<IWork>(`${BASE_URL}/work`, workRequest, { headers });
     }
 
     get(workId: number): Observable<any> {
@@ -26,14 +27,9 @@ export class WorkService {
         return this.http.get<IWork>(`${BASE_URL}/work/${workId}`, { headers });
     }
 
-    edit(work: IWork, selectedMaterialIds: number[]): Observable<any> {
+    edit(workRequest: IWorkEditRequest) {
         const headers = this.utilsService.getHeader();
-        const request: IWorkRequest = {
-            name: work.name,
-            laborPrice: work.laborPrice,
-            materialIdList: selectedMaterialIds
-        }
-        return this.http.put<IWork>(`${BASE_URL}/work/${work.id}`, request, { headers });
+        return this.http.put<IWork>(`${BASE_URL}/work/${workRequest.id}`, workRequest, { headers });
     }
 
     delete(id: number): Observable<any> {

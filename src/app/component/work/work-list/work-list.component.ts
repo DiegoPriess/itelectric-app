@@ -1,105 +1,143 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 import { UtilsService } from '../../../core/utils/utils.service';
 import { Page } from '../../../core/interfaces/Page';
 import { IWork } from '../../../core/models/Work';
 import { WorkService } from '../../../core/services/work.service';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
+import { WorkFormComponent } from '../work-form/work-form.component';
+import { ConfirmationModalComponent } from '../../confirmation-modal/confirmation-modal.component';
 
 @Component({
-	selector: 'app-work-list',
-	standalone: true,
-	imports: [
-		CommonModule,
-		MatPaginatorModule,
-		MatTableModule,
-		MatIconModule,
-		MatToolbarModule,
-		MatInputModule
-	],
-	templateUrl: './work-list.component.html',
-	styleUrl: './work-list.component.scss'
+  selector: 'app-work-list',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatIconModule,
+    MatToolbarModule,
+    MatInputModule,
+  ],
+  templateUrl: './work-list.component.html',
+  styleUrls: ['./work-list.component.scss'],
+  providers: [BsModalService],
 })
 export class WorkListComponent {
-	dataSource = new MatTableDataSource<IWork>();
-	totalElements: number = 0;
-	pageSize = 10;
-	pageIndex = 0;
-	searchQuery: string = '';
-	displayedColumns: string[] = ['name', 'laborPrice', 'materialPrice', 'quantityOfMaterials', 'actions'];
+  dataSource = new MatTableDataSource<IWork>();
+  totalElements: number = 0;
+  pageSize = 10;
+  pageIndex = 0;
+  searchQuery: string = '';
+  displayedColumns: string[] = [
+    'name',
+    'laborPrice',
+    'materialPrice',
+    'quantityOfMaterials',
+    'actions',
+  ];
+  modalRef?: BsModalRef;
 
-	@ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-	constructor(
-		private readonly workService: WorkService,
-		private readonly utilsService: UtilsService,
-		private readonly router: Router,
-		private readonly dialog: MatDialog
-	) { }
+  constructor(
+    private readonly workService: WorkService,
+    private readonly utilsService: UtilsService,
+    private readonly dialog: MatDialog,
+    private readonly modalService: BsModalService
+  ) {}
 
-	ngOnInit(): void {
-		this.loadData();
-		this.dataSource.paginator = this.paginator;
-	}
+  ngOnInit(): void {
+    this.loadData();
+  }
 
-	loadData(): void {
-		this.workService.list(this.pageIndex, this.pageSize, this.searchQuery).subscribe({
-			next: (page: Page<IWork>) => {
-				this.dataSource.data = page.content;
-				this.totalElements = page.totalElements;
-			}
-		});
-	}
+  loadData(): void {
+    this.workService
+      .list(this.pageIndex, this.pageSize, this.searchQuery)
+      .subscribe({
+        next: (page: Page<IWork>) => {
+          this.dataSource.data = page.content;
+          this.totalElements = page.totalElements;
+        },
+      });
+  }
 
-	onPageChange(event: any): void {
-		this.pageIndex = event.pageIndex;
-		this.pageSize = event.pageSize;
-		this.loadData();
-	}
+  onPageChange(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.loadData();
+  }
 
-	onSearchChange(event: Event): void {
-		const input = event.target as HTMLInputElement;
-		this.searchQuery = input.value;
-		this.pageIndex = 0;
-		this.loadData();
-	}
+  onSearchChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.searchQuery = input.value;
+    this.pageIndex = 0;
+    this.loadData();
+  }
 
-	delete(id: number): void {
-		const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-			data: {
-				message: 'Tem certeza que deseja excluir este trabalho?'
-			}
-		});
+  onDelete(id: number): void {
+    this.modalRef = this.modalService.show(ConfirmationModalComponent, {
+		class: 'modal-dialog-centered',
+		initialState: {
+			title: 'Excluir Trabalho',
+			message: 'Tem certeza de que deseja excluir este trabalho?',
+		},
+	});
 
-		dialogRef.afterClosed().subscribe(result => {
-			if (result) {
-				this.workService.delete(id).subscribe({
-					next: () => {
-						this.loadData();
-						this.utilsService.showSuccessMessage("Trabalho removido com sucesso!");
-					}
-				});
-			}
-		});
-	}
+    this.modalRef.content?.confirm.subscribe(() => {
+      this.delete(id);
+    });
+  }
 
-	onCreate(): void {
-		this.router.navigate(['/menu/trabalhos/criar']);
-	}
+  delete(id: number): void {
+    this.workService.delete(id).subscribe({
+      next: () => {
+        this.utilsService.showSuccessMessage('Trabalho excluído com sucesso!');
+        this.loadData();
+      }
+    });
+  }
 
-	onEdit(workId: number): void {
-		this.router.navigate(['/menu/trabalhos/editar', workId]);
-	}
+  onCreate(): void {
+    this.modalRef = this.modalService.show(WorkFormComponent, {
+      class: 'modal-dialog-centered modal-lg',
+      backdrop: 'static',
+      keyboard: false,
+      initialState: { mode: 'create' },
+    });
 
-	onView(workId: number): void {
-		this.router.navigate(['/menu/trabalhos/visualizar', workId]);
-	}
+    this.modalRef.onHide?.subscribe(() => {
+      this.loadData();
+    });
+  }
+
+  onEdit(workId: number): void {
+    this.workService.get(workId).subscribe((work) => {
+      this.modalRef = this.modalService.show(WorkFormComponent, {
+        class: 'modal-dialog-centered modal-lg',
+        initialState: { mode: 'edit', workData: work },
+      });
+
+      this.modalRef.onHide?.subscribe(() => {
+        this.loadData();
+      });
+    });
+  }
+
+  onView(workId: number): void {
+    this.workService.get(workId).subscribe((work) => {
+      this.modalRef = this.modalService.show(WorkFormComponent, {
+        class: 'modal-dialog-centered modal-lg',
+        initialState: { mode: 'view', workData: work },
+      });
+    });
+  }
 }

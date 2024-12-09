@@ -6,4 +6,5 @@ export interface IMaterial {
     price: number
     unitMeasure: IEnum,
     quantityUnitMeasure: number
+    disabled?: boolean;
 }
