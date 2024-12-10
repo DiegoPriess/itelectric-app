@@ -26,7 +26,7 @@
     <div class="mb-3">
       <app-material-select-list
         [selectedMaterialIds]="selectedMaterialIds"
-        [disabled]="mode === 'view'"
+        [mode]="mode"
         (selectedMaterialIdsChange)="onSelectedMaterialsChange($event)"
       ></app-material-select-list>
     </div>

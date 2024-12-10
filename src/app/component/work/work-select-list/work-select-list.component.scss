@@ -1,15 +1,22 @@
 .work-select-list {
+  width: 100%;
+
+  .work-form {
+    display: flex;
+    flex-direction: column;
+
     .work-select {
       width: 100%;
-    }
-  
-    .selected-works-box {
-      margin-top: 16px;
-  
-      .card-item {
-        margin-bottom: 8px;
-        padding: 8px;
-      }
+    }  
+
+    app-work-form-accordion {
+      width: 100%;
     }
   }
-  
+
+  .selected-works-box {
+    .card-item {
+      margin-bottom: 10px
+    }
+  }
+}

@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { FormsModule } from '@angular/forms';
+import { WorkFormComponent } from "../work-form-accordion/work-form-accordion.component";
 
 @Component({
   selector: 'app-work-select-list',
@@ -19,13 +20,14 @@ import { FormsModule } from '@angular/forms';
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
-  ],
+    WorkFormComponent
+],
   templateUrl: './work-select-list.component.html',
   styleUrls: ['./work-select-list.component.scss'],
 })
 export class WorkSelectListComponent implements OnInit {
+  @Input() mode: 'create' | 'edit' | 'view' = 'create';
   @Input() selectedWorkIds: number[] = [];
-  @Input() disabled: boolean = false;
   @Output() selectedWorkIdsChange = new EventEmitter<number[]>();
 
   dataSource: IWork[] = [];
@@ -46,9 +48,13 @@ export class WorkSelectListComponent implements OnInit {
   }
 
   updateSelection(selectedWorks: IWork[]): void {
-    if (this.disabled) return;
+    if (this.mode === 'view') return;
     this.selectedWorkIds = selectedWorks.map((work) => work.id);
     this.selectedWorkIdsChange.emit(this.selectedWorkIds);
+  }
+
+  onWorkSaved(): void {
+    this.loadData();
   }
 
   get selectedWorkObjects(): IWork[] {

@@ -1,49 +1,18 @@
 .material-select-list {
   width: 100%;
 
-  .material-select {
-    width: 100%;
-  }
-
-  .selected-materials {
+  .material-form {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 16px;
-    width: 100%;
-    flex-wrap: wrap;
-  
-    .material-item {
-      display: flex;
-      flex-direction: column;
-      background: #f4f4f4;
-      padding: 12px;
-      width: 45%;
-      border-radius: 8px;
-  
-      .material-info {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 8px;
-  
-        .material-name {
-          font-size: 1rem;
-        }
-  
-        .material-unit {
-          font-size: 0.9rem;
-          color: #888;
-          font-weight: bold;
-        }
-      }
-  
-      .bulk-quantity-field {
-        mat-label {
-          font-weight: 500;
-        }
-      }
+    flex-direction: column;
+
+    .material-select {
+      width: 100%;
+    }  
+
+    app-material-form-accordion {
+      width: 100%;
     }
-  }  
+  }
 
   .selected-materials-box {
     .card-item {

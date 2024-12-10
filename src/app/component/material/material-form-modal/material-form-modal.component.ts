@@ -12,9 +12,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
+import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
+import { MatListModule } from '@angular/material/list';
 
 @Component({
-  selector: 'app-material-form',
+  selector: 'app-material-form-modal',
   standalone: true,
   imports: [
     CommonModule,
@@ -23,11 +25,13 @@ import { MatIconModule } from '@angular/material/icon';
     MatInputModule,
     MatSelectModule,
     MatIconModule,
+    MatExpansionModule,
+    MatListModule
   ],
-  templateUrl: './material-form.component.html',
-  styleUrls: ['./material-form.component.scss'],
+  templateUrl: './material-form-modal.component.html',
+  styleUrls: ['./material-form-modal.component.scss'],
 })
-export class MaterialFormComponent implements OnInit {
+export class MaterialFormModalComponent implements OnInit {
   @Input() mode: 'create' | 'edit' | 'view' = 'create';
   @Input() materialData?: IMaterial;
   @Output() closeAction = new EventEmitter<void>();

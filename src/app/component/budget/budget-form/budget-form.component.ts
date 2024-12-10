@@ -42,6 +42,10 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } f
     MatNativeDateModule,
     WorkSelectListComponent,
   ],
+  providers: [  
+    MatDatepickerModule,  
+    MatNativeDateModule
+  ],
   templateUrl: './budget-form.component.html'
 })
 export class BudgetFormComponent implements OnInit {

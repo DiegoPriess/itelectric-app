@@ -1,19 +1,26 @@
 <div class="material-select-list">
-  <mat-form-field appearance="outline" class="material-select" *ngIf="!disabled">
-    <mat-select
-      placeholder="Selecione os materiais"
-      [value]="selectedMaterialObjects"
-      multiple
-      panelClass="custom-overlay-pane"
-      (selectionChange)="updateSelection($event.value)"
+  <div class="material-form d-flex align-items-center" *ngIf="mode !== 'view'">
+    <mat-form-field
+      appearance="outline"
+      class="material-select flex-grow-1"
     >
-      <mat-option *ngFor="let material of dataSource" [value]="material">
-        {{ material.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+      <mat-select
+        placeholder="Selecione os materiais"
+        [value]="selectedMaterialIds"
+        (selectionChange)="updateSelection($event.value)"
+        multiple
+        panelClass="custom-overlay-pane"
+      >
+        <mat-option *ngFor="let material of dataSource" [value]="material.id">
+          {{ material.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <div class="selected-materials-box" *ngIf="disabled">
+    <app-material-form-accordion (materialSaved)="onMaterialSaved()" *ngIf="mode === 'create'"></app-material-form-accordion>
+  </div>
+
+  <div class="selected-materials-box" *ngIf="mode === 'view'">
     <p>Materiais Selecionados</p>
     <mat-card
       *ngFor="let material of selectedMaterialObjects"

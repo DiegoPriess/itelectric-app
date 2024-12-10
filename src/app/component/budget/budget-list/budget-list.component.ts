@@ -10,7 +10,6 @@ import { UtilsService } from '../../../core/utils/utils.service';
 import { Page } from '../../../core/interfaces/Page';
 import { IBudget } from '../../../core/models/Budget';
 import { BudgetService } from '../../../core/services/budget.service';
-import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 import { BudgetFormComponent } from '../budget-form/budget-form.component';
 import { ConfirmationModalComponent } from '../../confirmation-modal/confirmation-modal.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';

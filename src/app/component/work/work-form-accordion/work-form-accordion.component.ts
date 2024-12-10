@@ -10,32 +10,40 @@ import { MaterialSelectListComponent } from "../../material/material-select-list
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatAccordion, MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
+import { MatListModule } from '@angular/material/list';
 
 @Component({
-  selector: 'app-work-form',
+  selector: 'app-work-form-accordion',
   standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatInputModule,
-    MatIconModule,
     MatFormFieldModule,
-    MaterialSelectListComponent,
+    MatInputModule,
+    MatSelectModule,
+    MatIconModule,
+    MatAccordion,
+    MatExpansionModule,
+    MatListModule,
+    MaterialSelectListComponent
   ],
-  templateUrl: './work-form.component.html',
+  templateUrl: './work-form-accordion.component.html',
 })
 export class WorkFormComponent implements OnInit {
   @Input() mode: 'create' | 'edit' | 'view' = 'create';
   @Input() workData?: IWork;
   @Output() closeAction = new EventEmitter<void>();
+  @Output() workSaved = new EventEmitter<IWork>();
+
   form!: FormGroup;
   selectedMaterialIds: number[] = [];
 
   constructor(
     private readonly fb: FormBuilder,
     private readonly workService: WorkService,
-    private readonly utilsService: UtilsService,
-    private readonly bsModalRef: BsModalRef
+    private readonly utilsService: UtilsService
   ) {}
 
   ngOnInit(): void {
@@ -60,44 +68,32 @@ export class WorkFormComponent implements OnInit {
   populateForm(work: IWork): void {
     this.form.patchValue({
       name: work.name,
-      laborPrice: work.laborPrice,
+      laborPrice: work.laborPrice
     });
-    this.selectedMaterialIds = work.materialList?.map((mat) => mat.id) || [];
   }
 
   onSelectedMaterialsChange(materialIds: number[]): void {
     this.selectedMaterialIds = materialIds;
   }
 
-  onSubmit(): void {
-    if (this.mode === 'view') return;
-
+  onSubmit(panel: MatExpansionPanel): void {
+    if (this.mode === 'view' || this.mode === 'edit') return;
+  
     const workRequest: IWorkRequest = {
       name: this.form.value.name,
       laborPrice: this.form.value.laborPrice,
       materialIdList: this.selectedMaterialIds,
     };
-
+  
     if (this.mode === 'create') {
       this.workService.add(workRequest).subscribe({
-        next: () => {
+        next: (newWork: IWork) => {
           this.utilsService.showSuccessMessage('Trabalho criado com sucesso!');
-          this.closeModal();
-        }
+          this.form.reset();
+          panel.close();
+          this.workSaved.emit(newWork);
+        },
       });
     }
-  
-    if (this.mode === 'edit' && this.workData) {
-      this.workService.edit({ ...workRequest, id: this.workData.id }).subscribe({
-        next: () => {
-          this.utilsService.showSuccessMessage('Trabalho atualizado com sucesso!');
-          this.closeModal();
-        }
-      });
-    }
-  }  
-
-  closeModal(): void {
-    this.bsModalRef.hide();
   }
 }

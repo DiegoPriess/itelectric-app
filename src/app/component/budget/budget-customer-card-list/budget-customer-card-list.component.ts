@@ -19,10 +19,10 @@ import { MatDivider } from '@angular/material/divider';
     MatToolbarModule,
     MatCardModule,
     MatInputModule,
-	MatAccordion,
-	MatExpansionModule,
-	MatListModule,
-	MatDivider
+    MatAccordion,
+    MatExpansionModule,
+    MatListModule,
+    MatDivider
   ],
   templateUrl: './budget-customer-card-list.component.html',
   styleUrls: ['./budget-customer-card-list.component.scss']

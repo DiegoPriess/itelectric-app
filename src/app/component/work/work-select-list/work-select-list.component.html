@@ -1,19 +1,25 @@
 <div class="work-select-list">
-  <mat-form-field appearance="outline" class="work-select" *ngIf="!disabled">
-    <mat-select
-      placeholder="Selecione os trabalhos"
-      [value]="selectedWorkObjects"
-      multiple
-      panelClass="custom-overlay-pane"
-      (selectionChange)="updateSelection($event.value)"
-    >
-      <mat-option *ngFor="let work of dataSource" [value]="work">
-        {{ work.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+  <div class="work-form d-flex align-items-center" *ngIf="mode !== 'view'">
+    <mat-form-field 
+      appearance="outline" 
+      class="work-select">
+      <mat-select
+        placeholder="Selecione os trabalhos"
+        [value]="selectedWorkObjects"
+        multiple
+        panelClass="custom-overlay-pane"
+        (selectionChange)="updateSelection($event.value)"
+      >
+        <mat-option *ngFor="let work of dataSource" [value]="work">
+          {{ work.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <div class="selected-works-box" *ngIf="disabled">
+    <app-work-form-accordion (workSaved)="onWorkSaved()" *ngIf="mode === 'create'"></app-work-form-accordion>
+  </div>
+
+  <div class="selected-works-box" *ngIf="mode === 'view'">
     <p>Trabalhos Selecionados</p>
     <mat-card
       *ngFor="let work of selectedWorkObjects"

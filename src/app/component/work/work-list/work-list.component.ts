@@ -12,8 +12,7 @@ import { UtilsService } from '../../../core/utils/utils.service';
 import { Page } from '../../../core/interfaces/Page';
 import { IWork } from '../../../core/models/Work';
 import { WorkService } from '../../../core/services/work.service';
-import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
-import { WorkFormComponent } from '../work-form/work-form.component';
+import { WorkFormComponent } from '../work-form-modal/work-form-modal.component';
 import { ConfirmationModalComponent } from '../../confirmation-modal/confirmation-modal.component';
 
 @Component({

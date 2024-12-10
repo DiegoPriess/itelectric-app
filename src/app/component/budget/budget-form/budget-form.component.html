@@ -58,7 +58,7 @@
     <div class="mb-3">
       <app-work-select-list
         [selectedWorkIds]="selectedWorkIds"
-        [disabled]="mode === 'view'"
+        [mode]="mode"
         (selectedWorkIdsChange)="onSelectedWorksChange($event)"
       ></app-work-select-list>
     </div>
