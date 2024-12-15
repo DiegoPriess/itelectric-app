@@ -29,8 +29,8 @@ interface SelectedMaterial {
     MatInputModule,
     MatIconModule,
     FormsModule,
-    MaterialFormAccordionComponent,
-  ],
+    MaterialFormAccordionComponent
+],
   templateUrl: './material-select-list.component.html',
   styleUrls: ['./material-select-list.component.scss'],
 })

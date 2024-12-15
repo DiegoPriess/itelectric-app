@@ -5,10 +5,9 @@ import { UtilsService } from '../../../core/utils/utils.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';  // Importação do NoopAnimationsModule
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 
-// Mock Services
 class MockMaterialService {
   list() {
     return of({ content: [], totalElements: 0 });
@@ -36,10 +35,10 @@ describe('MaterialListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        MaterialListComponent,  // Adicionamos o componente no array 'imports' (não em 'declarations')
+        MaterialListComponent,
         MatPaginatorModule, 
         MatTableModule,
-        NoopAnimationsModule  // Adiciona o NoopAnimationsModule para evitar animações reais
+        NoopAnimationsModule
       ],
       providers: [
         { provide: MaterialService, useClass: MockMaterialService },

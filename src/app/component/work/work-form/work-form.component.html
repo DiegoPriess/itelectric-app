@@ -1,0 +1,34 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="mb-3">
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+  </div>
+
+  <div class="mb-3">
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Preço mão de obra</mat-label>
+      <input matInput formControlName="laborPrice" />
+    </mat-form-field>
+  </div>
+
+  <app-material-select-list
+    [selectedMaterialIds]="selectedMaterialIds"
+    [selectedMaterialsInput]="selectedMaterials"
+    [mode]="mode"
+    (selectedMaterialsChange)="onMaterialsChange($event)"
+  >
+  </app-material-select-list>
+
+  <div class="d-flex justify-content-end">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="!form.valid"
+    >
+      {{ mode === "create" ? "Salvar" : "Atualizar" }}
+    </button>
+  </div>
+</form>

@@ -37,4 +37,6 @@
       </mat-form-field>
     </div>
   </div>
+
+  <app-material-form-accordion (materialSaved)="onMaterialSaved()" *ngIf="mode === 'create'"></app-material-form-accordion>
 </div>

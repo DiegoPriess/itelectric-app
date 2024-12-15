@@ -1,122 +1,44 @@
-import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
+import { WorkFormComponent } from '../work-form/work-form.component';
+import { IWork } from '../../../core/models/Work';
 import { WorkService } from '../../../core/services/work.service';
 import { UtilsService } from '../../../core/utils/utils.service';
-import { IWorkRequest } from '../../../core/interfaces/work/WorkRequest';
-import { IWork } from '../../../core/models/Work';
-import { MaterialSelectListComponent } from "../../material/material-select-list/material-select-list.component";
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { CommonModule } from '@angular/common';
-import { MatInputModule } from '@angular/material/input';
-import { MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
-import { MatListModule } from '@angular/material/list';
-
-interface SelectedMaterial {
-  id: number;
-  bulkQuantity: number;
-}
 
 @Component({
   selector: 'app-work-form-accordion',
   standalone: true,
   imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatExpansionModule,
-    MatIconModule,
-    MatListModule,
-    MaterialSelectListComponent,
+    CommonModule, 
+    MatExpansionModule, 
+    WorkFormComponent
   ],
   templateUrl: './work-form-accordion.component.html',
 })
-export class WorkFormAccordionComponent implements OnInit {
+export class WorkFormAccordionComponent {
   @Input() mode: 'create' | 'edit' | 'view' = 'create';
   @Input() workData?: IWork;
-  @Output() closeAction = new EventEmitter<void>();
   @Output() workSaved = new EventEmitter<IWork>();
 
-  form!: FormGroup;
-  selectedMaterials: SelectedMaterial[] = [];
-
   constructor(
-    private readonly fb: FormBuilder,
-    private readonly workService: WorkService,
-    private readonly utilsService: UtilsService
+    private workService: WorkService,
+    private utilsService: UtilsService
   ) {}
 
-  ngOnInit(): void {
-    this.initializeForm();
-
-    if (this.mode !== 'create' && this.workData) {
-      this.populateForm(this.workData);
-    }
-
-    if (this.mode === 'view') {
-      this.form.disable();
-    }
-  }
-
-  initializeForm(): void {
-    this.form = this.fb.group({
-      name: ['', Validators.required],
-      laborPrice: ['', [Validators.required, Validators.pattern('^[0-9]+(\\.[0-9]{0,2})?$')]],
-    });
-  }
-
-  populateForm(work: IWork): void {
-    this.form.patchValue({
-      name: work.name,
-      laborPrice: work.laborPrice,
-    });
-
-    this.selectedMaterials = work.materialList?.map((mat) => ({
-      id: mat.id,
-      bulkQuantity: mat.quantityUnitMeasure || 0,
-    })) || [];
-  }
-
-  onSelectedMaterialsChange(materials: SelectedMaterial[]): void {
-    this.selectedMaterials = materials;
-  }
-
-  onSubmit(panel: MatExpansionPanel): void {
-    if (this.mode === 'view') return;
-
-    const workRequest: IWorkRequest = {
-      name: this.form.value.name,
-      laborPrice: this.form.value.laborPrice,
-      materialList: this.selectedMaterials.map((mat) => ({
-        id: mat.id,
-        bulkQuantity: mat.bulkQuantity,
-      })),
-    };
-
+  handleFormSubmit(workRequest: any, panel: MatExpansionPanel): void {
     if (this.mode === 'create') {
-      this.workService.add(workRequest).subscribe({
-        next: (newWork: IWork) => {
-          this.utilsService.showSuccessMessage('Trabalho criado com sucesso!');
-          this.form.reset();
-          panel.close();
-          this.workSaved.emit(newWork);
-        },
+      this.workService.add(workRequest).subscribe((newWork) => {
+        this.utilsService.showSuccessMessage('Trabalho criado com sucesso!');
+        this.workSaved.emit(newWork);
+        panel.close();
       });
-    }
-
-    if (this.mode === 'edit' && this.workData) {
-      this.workService.edit({ ...workRequest, id: this.workData.id }).subscribe({
-        next: (updatedWork: IWork) => {
-          this.utilsService.showSuccessMessage('Trabalho atualizado com sucesso!');
-          panel.close();
-          this.workSaved.emit(updatedWork);
-        },
+    } else if (this.mode === 'edit' && this.workData) {
+      this.workService.edit({ ...workRequest, id: this.workData.id }).subscribe((updatedWork) => {
+        this.utilsService.showSuccessMessage('Trabalho atualizado com sucesso!');
+        this.workSaved.emit(updatedWork);
+        panel.close();
       });
     }
   }
-
-  get selectedMaterialIds(): number[] {
-    return this.selectedMaterials.map(mat => mat.id);
-  }  
 }

@@ -21,10 +21,6 @@ import { BudgetService } from '../../../core/services/budget.service';
 import { IBudget } from '../../../core/models/Budget';
 import { IBudgetRequest } from '../../../core/interfaces/budget/BudgetRequest';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
-import { MatCardModule } from '@angular/material/card';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-budget-form',
@@ -35,18 +31,10 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } f
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatSelectModule,
     MatIconModule,
-    MatCardModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
     WorkSelectListComponent,
   ],
-  providers: [  
-    MatDatepickerModule,  
-    MatNativeDateModule
-  ],
-  templateUrl: './budget-form.component.html'
+  templateUrl: './budget-form.component.html',
 })
 export class BudgetFormComponent implements OnInit {
   @Input() mode: 'create' | 'edit' | 'view' = 'create';
@@ -54,16 +42,15 @@ export class BudgetFormComponent implements OnInit {
   @Output() closeAction = new EventEmitter<void>();
   form!: FormGroup;
   selectedWorkIds: number[] = [];
-  minDate: Date = new Date();
+  minDate: string;
 
   constructor(
     private readonly fb: FormBuilder,
     private readonly budgetService: BudgetService,
     private readonly utilsService: UtilsService,
-    private readonly bsModalRef: BsModalRef,
-    private dateAdapter: DateAdapter<Date>
+    private readonly bsModalRef: BsModalRef
   ) {
-    this.dateAdapter.setLocale('pt-BR');
+    this.minDate = this.formatDate(new Date());
   }
 
   ngOnInit(): void {
@@ -79,13 +66,18 @@ export class BudgetFormComponent implements OnInit {
   }
 
   initializeForm(): void {
+    const confirmEmailValidators =
+      this.mode === 'create'
+        ? [Validators.required, Validators.email]
+        : [];
+
     const options: AbstractControlOptions = {
       validators: this.emailMatchValidator,
     };
 
     this.form = this.fb.group(
       {
-        deliveryForecast: new FormControl<Date | null>(null, [
+        deliveryForecast: new FormControl<string | null>(null, [
           Validators.required,
           this.minDateValidator,
         ]),
@@ -93,10 +85,7 @@ export class BudgetFormComponent implements OnInit {
           Validators.required,
           Validators.email,
         ]),
-        confirmEmail: new FormControl<string | null>(null, [
-          Validators.required,
-          Validators.email,
-        ]),
+        confirmEmail: new FormControl<string | null>(null, confirmEmailValidators),
       },
       options
     );
@@ -104,8 +93,9 @@ export class BudgetFormComponent implements OnInit {
 
   populateForm(budget: IBudget): void {
     this.form.patchValue({
-      deliveryForecast: budget.deliveryForecast,
+      deliveryForecast: this.formatDate(budget.deliveryForecast),
       customerEmail: budget.customer.email,
+      confirmEmail: budget.customer.email,
     });
     this.selectedWorkIds = budget.workList?.map((work) => work.id) || [];
   }
@@ -123,11 +113,13 @@ export class BudgetFormComponent implements OnInit {
     return null;
   };
 
-  minDateValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  minDateValidator: ValidatorFn = (
+    control: AbstractControl
+  ): ValidationErrors | null => {
     const value = control.value ? new Date(control.value) : null;
-    return value && value < this.minDate ? { minDate: true } : null;
-  };  
-  
+    return value && value < new Date(this.minDate) ? { minDate: true } : null;
+  };
+
   onSelectedWorksChange(workIds: number[]): void {
     this.selectedWorkIds = workIds;
   }
@@ -144,9 +136,7 @@ export class BudgetFormComponent implements OnInit {
     if (this.mode === 'create') {
       this.budgetService.add(budgetRequest).subscribe({
         next: () => {
-          this.utilsService.showSuccessMessage(
-            'Trabalho criado com sucesso!'
-          );
+          this.utilsService.showSuccessMessage('Orçamento criado com sucesso!');
           this.closeModal();
         },
       });
@@ -158,7 +148,7 @@ export class BudgetFormComponent implements OnInit {
         .subscribe({
           next: () => {
             this.utilsService.showSuccessMessage(
-              'Trabalho atualizado com sucesso!'
+              'Orçamento atualizado com sucesso!'
             );
             this.closeModal();
           },
@@ -168,5 +158,21 @@ export class BudgetFormComponent implements OnInit {
 
   closeModal(): void {
     this.bsModalRef.hide();
+  }
+
+  private formatDate(date: Date | string | number[]): string {
+    let parsedDate: Date;
+
+    if (Array.isArray(date)) {
+      const [year, month, day] = date;
+      parsedDate = new Date(year, month - 1, day);
+    } else {
+      parsedDate = new Date(date);
+    }
+
+    const year = parsedDate.getFullYear();
+    const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
+    const day = String(parsedDate.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 }
