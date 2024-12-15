@@ -12,7 +12,7 @@ import { UtilsService } from '../../../core/utils/utils.service';
 import { Page } from '../../../core/interfaces/Page';
 import { IWork } from '../../../core/models/Work';
 import { WorkService } from '../../../core/services/work.service';
-import { WorkFormComponent } from '../work-form-modal/work-form-modal.component';
+import { WorkFormModalComponent } from '../work-form-modal/work-form-modal.component';
 import { ConfirmationModalComponent } from '../../confirmation-modal/confirmation-modal.component';
 
 @Component({
@@ -46,6 +46,7 @@ export class WorkListComponent {
   modalRef?: BsModalRef;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+return: string|boolean|undefined;
 
   constructor(
     private readonly workService: WorkService,
@@ -106,7 +107,7 @@ export class WorkListComponent {
   }
 
   onCreate(): void {
-    this.modalRef = this.modalService.show(WorkFormComponent, {
+    this.modalRef = this.modalService.show(WorkFormModalComponent, {
       class: 'modal-dialog-centered modal-lg',
       backdrop: 'static',
       keyboard: false,
@@ -120,7 +121,7 @@ export class WorkListComponent {
 
   onEdit(workId: number): void {
     this.workService.get(workId).subscribe((work) => {
-      this.modalRef = this.modalService.show(WorkFormComponent, {
+      this.modalRef = this.modalService.show(WorkFormModalComponent, {
         class: 'modal-dialog-centered modal-lg',
         initialState: { mode: 'edit', workData: work },
       });
@@ -133,7 +134,7 @@ export class WorkListComponent {
 
   onView(workId: number): void {
     this.workService.get(workId).subscribe((work) => {
-      this.modalRef = this.modalService.show(WorkFormComponent, {
+      this.modalRef = this.modalService.show(WorkFormModalComponent, {
         class: 'modal-dialog-centered modal-lg',
         initialState: { mode: 'view', workData: work },
       });

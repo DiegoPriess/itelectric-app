@@ -10,6 +10,7 @@ import { MaterialSelectListComponent } from "../../material/material-select-list
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
+import { IBulkMaterialRequest } from '../../../core/interfaces/work/BulkMaterialRequest';
 
 @Component({
   selector: 'app-work-form-modal',
@@ -24,12 +25,12 @@ import { MatInputModule } from '@angular/material/input';
   ],
   templateUrl: './work-form-modal.component.html',
 })
-export class WorkFormComponent implements OnInit {
+export class WorkFormModalComponent implements OnInit {
   @Input() mode: 'create' | 'edit' | 'view' = 'create';
   @Input() workData?: IWork;
   @Output() closeAction = new EventEmitter<void>();
   form!: FormGroup;
-  selectedMaterialIds: number[] = [];
+  selectedMaterials: IBulkMaterialRequest[] = [];
 
   constructor(
     private readonly fb: FormBuilder,
@@ -62,11 +63,15 @@ export class WorkFormComponent implements OnInit {
       name: work.name,
       laborPrice: work.laborPrice,
     });
-    this.selectedMaterialIds = work.materialList?.map((mat) => mat.id) || [];
+
+    this.selectedMaterials = work.materialList.map((mat) => ({
+      id: mat.id,
+      bulkQuantity: mat.quantityUnitMeasure,
+    }));
   }
 
-  onSelectedMaterialsChange(materialIds: number[]): void {
-    this.selectedMaterialIds = materialIds;
+  onSelectedMaterialsChange(materials: IBulkMaterialRequest[]): void {
+    this.selectedMaterials = materials;
   }
 
   onSubmit(): void {
@@ -75,7 +80,7 @@ export class WorkFormComponent implements OnInit {
     const workRequest: IWorkRequest = {
       name: this.form.value.name,
       laborPrice: this.form.value.laborPrice,
-      materialIdList: this.selectedMaterialIds,
+      materialList: this.selectedMaterials,
     };
 
     if (this.mode === 'create') {
@@ -83,21 +88,25 @@ export class WorkFormComponent implements OnInit {
         next: () => {
           this.utilsService.showSuccessMessage('Trabalho criado com sucesso!');
           this.closeModal();
-        }
+        },
       });
     }
-  
+
     if (this.mode === 'edit' && this.workData) {
       this.workService.edit({ ...workRequest, id: this.workData.id }).subscribe({
         next: () => {
           this.utilsService.showSuccessMessage('Trabalho atualizado com sucesso!');
           this.closeModal();
-        }
+        },
       });
     }
-  }  
+  }
 
   closeModal(): void {
     this.bsModalRef.hide();
+  }
+
+  get selectedMaterialIds(): number[] {
+    return this.selectedMaterials.map(mat => mat.id);
   }
 }

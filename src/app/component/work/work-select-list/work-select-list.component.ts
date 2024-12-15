@@ -8,7 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { FormsModule } from '@angular/forms';
-import { WorkFormComponent } from "../work-form-accordion/work-form-accordion.component";
+import { WorkFormAccordionComponent } from "../work-form-accordion/work-form-accordion.component";
 
 @Component({
   selector: 'app-work-select-list',
@@ -20,7 +20,7 @@ import { WorkFormComponent } from "../work-form-accordion/work-form-accordion.co
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
-    WorkFormComponent
+    WorkFormAccordionComponent
 ],
   templateUrl: './work-select-list.component.html',
   styleUrls: ['./work-select-list.component.scss'],

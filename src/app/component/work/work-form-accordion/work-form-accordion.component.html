@@ -2,7 +2,13 @@
   <mat-expansion-panel #panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
-        {{ mode === "create" ? "Novo Trabalho" : mode === "edit" ? "Editar Trabalho" : "Visualizar Trabalho" }}
+        {{
+          mode === "create"
+            ? "Novo Trabalho"
+            : mode === "edit"
+            ? "Editar Trabalho"
+            : "Visualizar Trabalho"
+        }}
       </mat-panel-title>
     </mat-expansion-panel-header>
 
@@ -25,8 +31,9 @@
         <app-material-select-list
           [selectedMaterialIds]="selectedMaterialIds"
           [mode]="mode"
-          (selectedMaterialIdsChange)="onSelectedMaterialsChange($event)"
-        ></app-material-select-list>
+          (selectedMaterialsChange)="onSelectedMaterialsChange($event)"
+        >
+        </app-material-select-list>
       </div>
 
       <div class="modal-footer d-flex justify-content-end">

@@ -1,7 +1,6 @@
 import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { BsModalRef } from 'ngx-bootstrap/modal';
 import { WorkService } from '../../../core/services/work.service';
 import { UtilsService } from '../../../core/utils/utils.service';
 import { IWorkRequest } from '../../../core/interfaces/work/WorkRequest';
@@ -10,9 +9,13 @@ import { MaterialSelectListComponent } from "../../material/material-select-list
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatAccordion, MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
+import { MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
+
+interface SelectedMaterial {
+  id: number;
+  bulkQuantity: number;
+}
 
 @Component({
   selector: 'app-work-form-accordion',
@@ -22,23 +25,21 @@ import { MatListModule } from '@angular/material/list';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSelectModule,
-    MatIconModule,
-    MatAccordion,
     MatExpansionModule,
+    MatIconModule,
     MatListModule,
-    MaterialSelectListComponent
+    MaterialSelectListComponent,
   ],
   templateUrl: './work-form-accordion.component.html',
 })
-export class WorkFormComponent implements OnInit {
+export class WorkFormAccordionComponent implements OnInit {
   @Input() mode: 'create' | 'edit' | 'view' = 'create';
   @Input() workData?: IWork;
   @Output() closeAction = new EventEmitter<void>();
   @Output() workSaved = new EventEmitter<IWork>();
 
   form!: FormGroup;
-  selectedMaterialIds: number[] = [];
+  selectedMaterials: SelectedMaterial[] = [];
 
   constructor(
     private readonly fb: FormBuilder,
@@ -61,30 +62,38 @@ export class WorkFormComponent implements OnInit {
   initializeForm(): void {
     this.form = this.fb.group({
       name: ['', Validators.required],
-      laborPrice: ['', [Validators.required, Validators.pattern('^[0-9]+(.[0-9]{0,2})?$')]],
+      laborPrice: ['', [Validators.required, Validators.pattern('^[0-9]+(\\.[0-9]{0,2})?$')]],
     });
   }
 
   populateForm(work: IWork): void {
     this.form.patchValue({
       name: work.name,
-      laborPrice: work.laborPrice
+      laborPrice: work.laborPrice,
     });
+
+    this.selectedMaterials = work.materialList?.map((mat) => ({
+      id: mat.id,
+      bulkQuantity: mat.quantityUnitMeasure || 0,
+    })) || [];
   }
 
-  onSelectedMaterialsChange(materialIds: number[]): void {
-    this.selectedMaterialIds = materialIds;
+  onSelectedMaterialsChange(materials: SelectedMaterial[]): void {
+    this.selectedMaterials = materials;
   }
 
   onSubmit(panel: MatExpansionPanel): void {
-    if (this.mode === 'view' || this.mode === 'edit') return;
-  
+    if (this.mode === 'view') return;
+
     const workRequest: IWorkRequest = {
       name: this.form.value.name,
       laborPrice: this.form.value.laborPrice,
-      materialIdList: this.selectedMaterialIds,
+      materialList: this.selectedMaterials.map((mat) => ({
+        id: mat.id,
+        bulkQuantity: mat.bulkQuantity,
+      })),
     };
-  
+
     if (this.mode === 'create') {
       this.workService.add(workRequest).subscribe({
         next: (newWork: IWork) => {
@@ -95,5 +104,19 @@ export class WorkFormComponent implements OnInit {
         },
       });
     }
+
+    if (this.mode === 'edit' && this.workData) {
+      this.workService.edit({ ...workRequest, id: this.workData.id }).subscribe({
+        next: (updatedWork: IWork) => {
+          this.utilsService.showSuccessMessage('Trabalho atualizado com sucesso!');
+          panel.close();
+          this.workSaved.emit(updatedWork);
+        },
+      });
+    }
   }
+
+  get selectedMaterialIds(): number[] {
+    return this.selectedMaterials.map(mat => mat.id);
+  }  
 }

@@ -1,5 +1,7 @@
+import { IBulkMaterialRequest } from "./BulkMaterialRequest"
+
 export interface IWorkRequest {
   name: string
   laborPrice: number
-  materialIdList: number[]
+  materialList: IBulkMaterialRequest[]
 }

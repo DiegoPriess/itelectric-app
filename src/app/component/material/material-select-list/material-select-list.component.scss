@@ -1,22 +1,40 @@
-.material-select-list {
+.selected-materials-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 16px;
   width: 100%;
+  flex-wrap: wrap;
 
-  .material-form {
+  .material-item {
     display: flex;
     flex-direction: column;
+    background: #f4f4f4;
+    padding: 12px;
+    width: 45%;
+    border-radius: 8px;
 
-    .material-select {
-      width: 100%;
-    }  
+    .material-info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
 
-    app-material-form-accordion {
-      width: 100%;
+      .material-name {
+        font-size: 1rem;
+      }
+
+      .material-unit {
+        font-size: 0.9rem;
+        color: #888;
+        font-weight: bold;
+        margin-left: 5px;
+      }
     }
-  }
 
-  .selected-materials-box {
-    .card-item {
-      margin-bottom: 10px
+    .bulk-quantity-field {
+      mat-label {
+        font-weight: 500;
+      }
     }
   }
 }
