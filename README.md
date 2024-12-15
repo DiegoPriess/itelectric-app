@@ -84,8 +84,7 @@ Responsável por realizar o deploy do front-end do projeto.
   9. Reinício do serviço Nginx para carregar as novas alterações.
   10. Verificação do deploy com uma chamada HTTP local.
 
-A pipeline é acionada automaticamente ao realizar merge de algum PR ou ao receber umm push na branch MAIN
-Essa pipeline garante que o código do projeto esteja sempre analisado e que a versão mais recente seja publica
+A pipeline é acionada automaticamente ao realizar merge de algum PR para a MAIN ou ao receber umm push na branch MAIN. Essa pipeline garante que o código do projeto esteja sempre analisado e que a versão mais recente seja publica
 
 ## Tecnologias Utilizadas
 - **Linguagem:** Angular 18
