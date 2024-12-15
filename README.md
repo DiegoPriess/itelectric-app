@@ -53,6 +53,40 @@ Esse é o FRONT-END do projeto, que também conta com um back-end disponíveL no
 | **RNF.3**     | **Experiência do Usuário**                                                            | O sistema deve oferecer uma experiência de usuário intuitiva e fluida, com interfaces amigáveis e tempos de resposta rápidos.           |
 | **RNF.4**     | **Criptografia bcrypt**                                                                | As senhas dos usuários devem ser criptografadas utilizando o algoritmo bcrypt, garantindo a segurança dos dados sensíveis.              |
 
+## Pipelines
+
+O projeto utiliza uma pipeline automatizada para garantir qualidade de código e realizar o deploy contínuo na AWS Lightsail. Abaixo estão os detalhes do processo configurado no GitHub Actions:
+
+### 1. **SonarCloud Análise de Qualidade**
+Responsável por realizar a análise de qualidade do código utilizando o SonarCloud.
+
+- **Etapas**:
+  1. Checkout do repositório.
+  2. Configuração do ambiente Node.js (versão 20).
+  3. Instalação das dependências do projeto com `npm install`.
+  4. Execução dos testes com cobertura de código (`npm run test`).
+  5. Envio dos resultados da análise para o [SonarCloud](https://sonarcloud.io/project/overview?id=DiegoPriess_iteletric-app).
+
+### 2. **Deploy para AWS Lightsail**
+Responsável por realizar o deploy do front-end do projeto.
+
+- **Etapas**:
+  1. Checkout do repositório.
+  2. Configuração do ambiente Node.js (versão 18).
+  3. Instalação das dependências do projeto com `npm install`.
+  4. Build da aplicação Angular para o ambiente de produção (`npm run build:production`).
+  5. Configuração de permissões no servidor AWS Lightsail:
+     - Criação do diretório `/home/ec2-user/iteletric-app`.
+     - Garantia de permissões corretas para o usuário `ec2-user`.
+  6. Limpeza do diretório de destino no servidor.
+  7. Envio dos arquivos construídos para o servidor.
+  8. Ajuste de permissões dos arquivos enviados.
+  9. Reinício do serviço Nginx para carregar as novas alterações.
+  10. Verificação do deploy com uma chamada HTTP local.
+
+A pipeline é acionada automaticamente ao realizar merge de algum PR ou ao receber umm push na branch MAIN
+Essa pipeline garante que o código do projeto esteja sempre analisado e que a versão mais recente seja publica
+
 ## Tecnologias Utilizadas
 - **Linguagem:** Angular 18
 - **Testes:** JEST
