@@ -1,115 +1,54 @@
-import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BsModalRef } from 'ngx-bootstrap/modal';
-import { MaterialService } from '../../../core/services/material.service';
-import { EnumService } from '../../../core/services/enum.service';
-import { UtilsService } from '../../../core/utils/utils.service';
-import { IEnum } from '../../../core/interfaces/Enum';
-import { IMaterial } from '../../../core/models/Material';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
-import { MatListModule } from '@angular/material/list';
+import { CommonModule } from '@angular/common';
+import { MaterialFormComponent } from '../material-form/material-form.component';
+import { IMaterial } from '../../../core/models/Material';
+import { MaterialService } from '../../../core/services/material.service';
+import { UtilsService } from '../../../core/utils/utils.service';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-material-form-modal',
   standalone: true,
+  templateUrl: './material-form-modal.component.html',
   imports: [
     CommonModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
     MatIconModule,
-    MatExpansionModule,
-    MatListModule
+    MaterialFormComponent,
   ],
-  templateUrl: './material-form-modal.component.html',
-  styleUrls: ['./material-form-modal.component.scss'],
 })
-export class MaterialFormModalComponent implements OnInit {
+export class MaterialFormModalComponent {
   @Input() mode: 'create' | 'edit' | 'view' = 'create';
   @Input() materialData?: IMaterial;
-  @Output() closeAction = new EventEmitter<void>();
-
-  form!: FormGroup;
-  unitOfMeasureList: IEnum[] = [];
+  @Output() materialSaved = new EventEmitter<IMaterial>();
 
   constructor(
-    private readonly fb: FormBuilder,
-    private readonly materialService: MaterialService,
-    private readonly enumService: EnumService,
-    private readonly utilsService: UtilsService,
-    private readonly bsModalRef: BsModalRef
+    private materialService: MaterialService,
+    private utilsService: UtilsService,
+    private modalRef: BsModalRef
   ) {}
 
-  ngOnInit(): void {
-    this.initializeForm();
-    this.loadUnitOfMeasures();
-
-    if (this.mode !== 'create' && this.materialData) {
-      this.populateForm(this.materialData);
-    }
-
-    if (this.mode === 'view') {
-      this.form.disable();
-    }
-  }
-
-  initializeForm(): void {
-    this.form = this.fb.group({
-      name: ['', Validators.required],
-      price: ['', [Validators.required, Validators.pattern('^[0-9]+(\\.[0-9]{0,2})?$')]],
-      quantityUnitMeasure: ['', Validators.required],
-      unitMeasure: ['', Validators.required],
-    });
-  }
-
-  loadUnitOfMeasures(): void {
-    this.enumService.listUnitOfMeasure().subscribe((unitOfMeasureList: IEnum[]) => {
-      this.unitOfMeasureList = unitOfMeasureList;
-    });
-  }
-
-  populateForm(material: IMaterial): void {
-    this.form.patchValue({
-      name: material.name,
-      price: material.price,
-      quantityUnitMeasure: material.quantityUnitMeasure,
-      unitMeasure: material.unitMeasure,
-    });
-  }
-
-  onSubmit(): void {
-    if (this.mode === 'view') return;
-
-    const materialRequest = this.form.value;
-
+  handleFormSubmit(material: IMaterial): void {
     if (this.mode === 'create') {
-      this.materialService.add(materialRequest).subscribe({
-        next: () => {
+      this.materialService.add(material).subscribe({
+        next: (newMaterial: IMaterial) => {
           this.utilsService.showSuccessMessage('Material criado com sucesso!');
+          this.materialSaved.emit(newMaterial);
           this.closeModal();
-        },
+        }
       });
-    }
-
-    if (this.mode === 'edit' && this.materialData) {
-      this.materialService.edit({ ...materialRequest, id: this.materialData.id }).subscribe({
-        next: () => {
+    } else if (this.mode === 'edit' && this.materialData) {
+      this.materialService.edit({ ...material, id: this.materialData.id }).subscribe({
+        next: (updatedMaterial: IMaterial) => {
           this.utilsService.showSuccessMessage('Material atualizado com sucesso!');
+          this.materialSaved.emit(updatedMaterial);
           this.closeModal();
-        },
+        }
       });
     }
   }
 
   closeModal(): void {
-    this.bsModalRef.hide();
-    this.closeAction.emit();
+    this.modalRef.hide();
   }
 }

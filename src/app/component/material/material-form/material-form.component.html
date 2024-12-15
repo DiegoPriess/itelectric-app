@@ -1,0 +1,45 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="mb-3">
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+  </div>
+
+  <div class="mb-3">
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Preço</mat-label>
+      <input matInput formControlName="price" />
+    </mat-form-field>
+  </div>
+
+  <div class="mb-3">
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Quantidade</mat-label>
+      <input matInput formControlName="quantityUnitMeasure" />
+    </mat-form-field>
+  </div>
+
+  <div class="mb-3">
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Unidade de Medida</mat-label>
+      <mat-select formControlName="unitMeasure">
+        <mat-option *ngFor="let unit of unitOfMeasureList" [value]="unit.name">
+          {{ unit.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    
+  </div>
+
+  <div class="d-flex justify-content-end">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="!form.valid"
+    >
+      {{ mode === "create" ? "Salvar" : "Atualizar" }}
+    </button>
+  </div>
+</form>

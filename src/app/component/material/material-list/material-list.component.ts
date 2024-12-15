@@ -97,29 +97,39 @@ export class MaterialListComponent {
 
 	onCreate(): void {
 		this.modalRef = this.modalService.show(MaterialFormModalComponent, {
-			class: 'modal-dialog-centered modal-lg',
-			backdrop: 'static',
-			keyboard: false,
-			initialState: { mode: 'create' },
+		  class: 'modal-dialog-centered modal-lg',
+		  backdrop: 'static',
+		  keyboard: false,
+		  initialState: { mode: 'create' },
+		});
+
+		this.modalRef.content?.materialSaved.subscribe(() => {
+		  this.loadData();
 		});
 
 		this.modalRef.onHide?.subscribe(() => {
-			this.loadData();
+		  this.loadData();
 		});
-	}
+	  }
+	  
 
-	onEdit(materialId: number): void {
+	  onEdit(materialId: number): void {
 		this.materialService.get(materialId).subscribe((material) => {
-			this.modalRef = this.modalService.show(MaterialFormModalComponent, {
-				class: 'modal-dialog-centered modal-lg',
-				initialState: { mode: 'edit', materialData: material },
-			});
+		  this.modalRef = this.modalService.show(MaterialFormModalComponent, {
+			class: 'modal-dialog-centered modal-lg',
+			initialState: { mode: 'edit', materialData: material },
+		  });
 
-			this.modalRef.onHide?.subscribe(() => {
-				this.loadData();
-			});
+		  this.modalRef.content?.materialSaved.subscribe(() => {
+			this.loadData();
+		  });
+	  
+		  this.modalRef.onHide?.subscribe(() => {
+			this.loadData();
+		  });
 		});
-	}
+	  }
+	  
 
 	onView(materialId: number): void {
 		this.materialService.get(materialId).subscribe((material) => {

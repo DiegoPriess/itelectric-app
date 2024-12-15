@@ -28,14 +28,7 @@ export class MaterialService {
 
     edit(material: IMaterial): Observable<any> {
         const headers = this.utilsService.getHeader();
-        const request: IMaterialRequest = {
-            name: material.name,
-            price: material.price,
-            quantityUnitMeasure: material.quantityUnitMeasure,
-            unitMeasure: material.unitMeasure.name
-        }
-
-        return this.http.put<IMaterial>(`${BASE_URL}/material/${material.id}`, request, { headers });
+        return this.http.put<IMaterial>(`${BASE_URL}/material/${material.id}`, material, { headers });
     }
 
     delete(materialId: number): Observable<any> {

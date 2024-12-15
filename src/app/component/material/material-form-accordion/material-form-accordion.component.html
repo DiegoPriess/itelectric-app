@@ -3,61 +3,19 @@
     <mat-expansion-panel-header>
       <mat-panel-title>
         {{
-          mode === "create"
-            ? "Novo Material"
-            : mode === "edit"
-            ? "Editar Material"
-            : "Visualizar Material"
+          mode === 'create'
+            ? 'Novo Material'
+            : mode === 'edit'
+            ? 'Editar Material'
+            : 'Visualizar Material'
         }}
       </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <form [formGroup]="form" (ngSubmit)="onSubmit(panel)">
-      <div class="mb-3">
-        <mat-form-field appearance="fill" class="w-100">
-          <mat-label>Nome</mat-label>
-          <input matInput formControlName="name" />
-        </mat-form-field>
-      </div>
-
-      <div class="mb-3">
-        <mat-form-field appearance="fill" class="w-100">
-          <mat-label>Preço</mat-label>
-          <input matInput formControlName="price" />
-        </mat-form-field>
-      </div>
-
-      <div class="mb-3">
-        <mat-form-field appearance="fill" class="w-100">
-          <mat-label>Quantidade</mat-label>
-          <input matInput formControlName="quantityUnitMeasure" />
-        </mat-form-field>
-      </div>
-
-      <div class="mb-3">
-        <mat-form-field appearance="fill" class="w-100">
-          <mat-label>Unidade de Medida</mat-label>
-          <mat-select formControlName="unitMeasure">
-            <mat-option
-              *ngFor="let unit of unitOfMeasureList"
-              [value]="unit.name"
-            >
-              {{ unit.label }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <div class="modal-footer d-flex justify-content-end">
-        <button
-          mat-raised-button
-          color="primary"
-          type="submit"
-          [disabled]="!form.valid"
-        >
-          Salvar
-        </button>
-      </div>
-    </form>
+    <app-material-form
+      [mode]="mode"
+      [materialData]="materialData"
+      (formSubmit)="handleFormSubmit($event, panel)"
+    ></app-material-form>
   </mat-expansion-panel>
 </mat-accordion>

@@ -1,103 +1,47 @@
-import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BsModalRef } from 'ngx-bootstrap/modal';
-import { MaterialService } from '../../../core/services/material.service';
-import { EnumService } from '../../../core/services/enum.service';
-import { UtilsService } from '../../../core/utils/utils.service';
-import { IEnum } from '../../../core/interfaces/Enum';
-import { IMaterial } from '../../../core/models/Material';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatIconModule } from '@angular/material/icon';
-import { MatAccordion, MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
-import { MatListModule } from '@angular/material/list';
+import { MaterialFormComponent } from '../material-form/material-form.component';
+import { IMaterial } from '../../../core/models/Material';
+import { MaterialService } from '../../../core/services/material.service';
+import { UtilsService } from '../../../core/utils/utils.service';
 
 @Component({
   selector: 'app-material-form-accordion',
   standalone: true,
+  templateUrl: './material-form-accordion.component.html',
   imports: [
     CommonModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatIconModule,
-    MatAccordion,
     MatExpansionModule,
-    MatListModule
+    MaterialFormComponent,
   ],
-  templateUrl: './material-form-accordion.component.html',
-  styleUrls: ['./material-form-accordion.component.scss'],
 })
-export class MaterialFormAccordionComponent implements OnInit {
+export class MaterialFormAccordionComponent {
   @Input() mode: 'create' | 'edit' | 'view' = 'create';
   @Input() materialData?: IMaterial;
-  @Output() closeAction = new EventEmitter<void>();
   @Output() materialSaved = new EventEmitter<IMaterial>();
 
-  form!: FormGroup;
-  unitOfMeasureList: IEnum[] = [];
-
   constructor(
-    private readonly fb: FormBuilder,
-    private readonly materialService: MaterialService,
-    private readonly enumService: EnumService,
-    private readonly utilsService: UtilsService
+    private materialService: MaterialService,
+    private utilsService: UtilsService
   ) {}
 
-  ngOnInit(): void {
-    this.initializeForm();
-    this.loadUnitOfMeasures();
-
-    if (this.mode !== 'create' && this.materialData) {
-      this.populateForm(this.materialData);
-    }
-
-    if (this.mode === 'view') {
-      this.form.disable();
-    }
-  }
-
-  initializeForm(): void {
-    this.form = this.fb.group({
-      name: ['', Validators.required],
-      price: ['', [Validators.required, Validators.pattern('^[0-9]+(\\.[0-9]{0,2})?$')]],
-      quantityUnitMeasure: ['', Validators.required],
-      unitMeasure: ['', Validators.required],
-    });
-  }
-
-  loadUnitOfMeasures(): void {
-    this.enumService.listUnitOfMeasure().subscribe((unitOfMeasureList: IEnum[]) => {
-      this.unitOfMeasureList = unitOfMeasureList;
-    });
-  }
-
-  populateForm(material: IMaterial): void {
-    this.form.patchValue({
-      name: material.name,
-      price: material.price,
-      quantityUnitMeasure: material.quantityUnitMeasure,
-      unitMeasure: material.unitMeasure,
-    });
-  }
-
-  onSubmit(panel: MatExpansionPanel): void {
-    if (this.mode === 'view' || this.mode === 'edit') return;
-  
-    const materialRequest = this.form.value;
-  
+  handleFormSubmit(material: IMaterial, panel: MatExpansionPanel): void {
     if (this.mode === 'create') {
-      this.materialService.add(materialRequest).subscribe({
+      this.materialService.add(material).subscribe({
         next: (newMaterial: IMaterial) => {
           this.utilsService.showSuccessMessage('Material criado com sucesso!');
-          this.form.reset();
-          panel.close();
           this.materialSaved.emit(newMaterial);
-        },
+          panel.close();
+        }
+      });
+    } else if (this.mode === 'edit' && this.materialData) {
+      this.materialService.edit({ ...material, id: this.materialData.id }).subscribe({
+        next: (updatedMaterial: IMaterial) => {
+          this.utilsService.showSuccessMessage('Material atualizado com sucesso!');
+          this.materialSaved.emit(updatedMaterial);
+          panel.close();
+        }
       });
     }
   }
